@@ -14,18 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.github.barteksc.pdfviewer.PDFView
+        <ImageView
             android:id="@+id/coverPdf"
             android:layout_width="90dp"
             android:layout_height="120dp"
             android:background="@color/design_default_color_secondary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.github.barteksc.pdfviewer.PDFView>
+            app:layout_constraintTop_toTopOf="parent">/>
+        </ImageView>
 
         <TextView
             android:id="@+id/tvPdfTitle"

@@ -2,6 +2,8 @@ package com.mt.pdfviewer;
 
 import java.util.Date;
 
+
+// Cái này chắc không cần thiết vì mình có một class để xử lý file rồi
 public class Pdf {
     String fileName, filePath;
     long fileSize;

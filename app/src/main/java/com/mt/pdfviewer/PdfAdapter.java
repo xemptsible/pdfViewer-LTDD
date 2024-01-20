@@ -1,29 +1,31 @@
 package com.mt.pdfviewer;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.pdf.PdfRenderer;
+import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.barteksc.pdfviewer.PDFView;
-
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
     private static final String TAG = "PdfAdapter";
     Context context;
-    ArrayList<Pdf> pdfFiles;
+    ArrayList<File> pdfFiles;
 
-    public PdfAdapter(Context context, ArrayList<Pdf> pdfFiles) {
+    public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;
         this.pdfFiles = pdfFiles;
     }
@@ -36,10 +38,11 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
-//        holder.pdfTitle.setText(pdfFiles.get(position).getName());
-        holder.pdfTitle.setText(pdfFiles.get(position).fileName);
-        holder.pdfDateAdded.setText(pdfFiles.get(position).fileDateAdded.toString());
+        long dateAdded = pdfFiles.get(position).lastModified();
+        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(dateAdded));
 
+        holder.pdfTitle.setText(pdfFiles.get(position).getName());
+        holder.pdfDateAdded.setText(dateString);
         holder.pdfTitle.setSelected(true);
     }
 
@@ -51,14 +54,15 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     public class PdfViewHolder extends RecyclerView.ViewHolder {
         TextView pdfTitle, pdfDateAdded;
         CardView container;
-        PDFView pdfView;
+        ImageView pdfCover;
+
         public PdfViewHolder(@NonNull View itemView) {
             super(itemView);
 
             pdfTitle = itemView.findViewById(R.id.tvPdfTitle);
             pdfDateAdded = itemView.findViewById(R.id.tvPdfDateAdded);
             container = itemView.findViewById(R.id.containerPdf);
-            pdfView = itemView.findViewById(R.id.coverPdf);
+            pdfCover = itemView.findViewById(R.id.coverPdf);
         }
     }
 }
