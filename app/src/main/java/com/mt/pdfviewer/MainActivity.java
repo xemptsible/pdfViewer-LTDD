@@ -22,11 +22,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private PdfAdapter pdfAdapter;
-    private ArrayList<File> pdfFiles;
-//    private ArrayList<Pdf> pdfFiles;
-//    ArrayList<Pdf> pdfFiles = new ArrayList<>();
-    private RecyclerView pdfRv;
 
 
     @Override
@@ -34,12 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         storageRuntimePermission();
-
-//        File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-//        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-//
-//        findPdf(docDir);
-//        findPdf(downloadDir);
     }
 
     private void storageRuntimePermission() {
@@ -76,36 +65,16 @@ public class MainActivity extends AppCompatActivity {
         return arrayList;
     }
 
-//    public void findPdf(File pdfDir) {
-//        Pdf pdfFile;
-//        File[] listFile = pdfDir.listFiles();
-//
-//        if (listFile != null) {
-//            for (File file : listFile) {
-//                if (file.getName().endsWith(".pdf")) ;
-//                pdfFile = new Pdf();
-//
-//                pdfFile.setFileName(file.getName());
-//                Log.d(TAG, pdfFile.getFileName());
-//                pdfFile.setFilePath(file.getAbsolutePath());
-//                Log.d(TAG, pdfFile.getFilePath());
-//                pdfFile.setFileDateAdded(new Date(file.lastModified()));
-//                Log.d(TAG, pdfFile.getFileDateAdded().toString());
-//                pdfFile.setFileSize(file.length());
-//                Log.d(TAG, String.valueOf(pdfFile.getFileSize()));
-//                pdfFiles.add(pdfFile);
-//            }
-//        }
-//    }
-
     private void displayPdf() {
-        pdfRv = findViewById(R.id.rvPdf);
+        //    private ArrayList<Pdf> pdfFiles;
+        //    ArrayList<Pdf> pdfFiles = new ArrayList<>();
+        RecyclerView pdfRv = findViewById(R.id.rvPdf);
         pdfRv.setHasFixedSize(true);
         pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        pdfFiles = new ArrayList<>();
+        ArrayList<File> pdfFiles = new ArrayList<>();
         pdfFiles.addAll(findPdf(Environment.getExternalStorageDirectory()));
-        pdfAdapter = new PdfAdapter(this, pdfFiles);
+        PdfAdapter pdfAdapter = new PdfAdapter(this, pdfFiles);
         pdfRv.setAdapter(pdfAdapter);
     }
 }
