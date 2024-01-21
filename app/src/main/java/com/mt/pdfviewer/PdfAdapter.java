@@ -18,6 +18,7 @@ import com.shockwave.pdfium.PdfDocument;
 import com.shockwave.pdfium.PdfiumCore;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,8 +47,11 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 .format(new Date(dateAdded));
 
+        long pdfSize = pdfFiles.get(position).length();
+
         holder.pdfTitle.setText(pdfFiles.get(position).getName());
         holder.pdfCover.setImageBitmap(renderToBitmap(new File(pdfFiles.get(position).getAbsolutePath())));
+        holder.pdfSize.setText(getReadableFileSize(pdfSize));
         holder.pdfDateAdded.setText(dateString);
         holder.pdfTitle.setSelected(true);
     }
@@ -75,8 +79,33 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         return bmp;
     }
 
+    public static String getReadableFileSize(long size) {
+        final int BYTES_IN_KILOBYTES = 1024;
+        final DecimalFormat dec = new DecimalFormat("###.#");
+        final String KILOBYTES = " KB";
+        final String MEGABYTES = " MB";
+        final String GIGABYTES = " GB";
+        float fileSize = 0;
+        String suffix = KILOBYTES;
+
+        if (size > BYTES_IN_KILOBYTES) {
+            fileSize = (float) size / BYTES_IN_KILOBYTES;
+            if (fileSize > BYTES_IN_KILOBYTES) {
+                fileSize = fileSize / BYTES_IN_KILOBYTES;
+                if (fileSize > BYTES_IN_KILOBYTES) {
+                    fileSize = fileSize / BYTES_IN_KILOBYTES;
+                    suffix = GIGABYTES;
+                } else {
+                    suffix = MEGABYTES;
+                }
+            }
+        }
+        return dec.format(fileSize) + suffix;
+    }
+
+
     public static class PdfViewHolder extends RecyclerView.ViewHolder {
-        TextView pdfTitle, pdfDateAdded;
+        TextView pdfTitle, pdfDateAdded, pdfSize;
         CardView container;
         ImageView pdfCover;
 
@@ -85,8 +114,9 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
             pdfTitle = itemView.findViewById(R.id.tvPdfTitle);
             pdfDateAdded = itemView.findViewById(R.id.tvPdfDateAdded);
-            container = itemView.findViewById(R.id.containerPdf);
             pdfCover = itemView.findViewById(R.id.coverPdf);
+            pdfSize = itemView.findViewById(R.id.tvPdfSize);
+            container = itemView.findViewById(R.id.containerPdf);
         }
     }
 }
