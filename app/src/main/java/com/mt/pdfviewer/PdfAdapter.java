@@ -14,10 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shockwave.pdfium.PdfDocument;
+import com.shockwave.pdfium.PdfiumCore;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
@@ -39,9 +43,11 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
         long dateAdded = pdfFiles.get(position).lastModified();
-        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(dateAdded));
+        String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                .format(new Date(dateAdded));
 
         holder.pdfTitle.setText(pdfFiles.get(position).getName());
+        holder.pdfCover.setImageBitmap(renderToBitmap(new File(pdfFiles.get(position).getAbsolutePath())));
         holder.pdfDateAdded.setText(dateString);
         holder.pdfTitle.setSelected(true);
     }
@@ -51,7 +57,25 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         return pdfFiles.size();
     }
 
-    public class PdfViewHolder extends RecyclerView.ViewHolder {
+    public Bitmap renderToBitmap(File filePath) {
+        Bitmap bmp = null;
+        PdfiumCore pdfiumCore = new PdfiumCore(context);
+        try {
+            ParcelFileDescriptor fd = ParcelFileDescriptor.open(filePath, ParcelFileDescriptor.MODE_READ_ONLY);
+            PdfDocument pdfDocument = pdfiumCore.newDocument(fd);
+            pdfiumCore.openPage(pdfDocument, 0);
+            int width = pdfiumCore.getPageWidthPoint(pdfDocument, 0);
+            int height = pdfiumCore.getPageHeightPoint(pdfDocument, 0);
+            bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            pdfiumCore.renderPageBitmap(pdfDocument, bmp, 0, 0, 0, width, height);
+            pdfiumCore.closeDocument(pdfDocument);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
+    public static class PdfViewHolder extends RecyclerView.ViewHolder {
         TextView pdfTitle, pdfDateAdded;
         CardView container;
         ImageView pdfCover;
