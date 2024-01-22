@@ -3,6 +3,7 @@ package com.mt.pdfviewer;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         storageRuntimePermission();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_layout, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void storageRuntimePermission() {
@@ -66,14 +73,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayPdf() {
-        //    private ArrayList<Pdf> pdfFiles;
-        //    ArrayList<Pdf> pdfFiles = new ArrayList<>();
         RecyclerView pdfRv = findViewById(R.id.rvPdf);
         pdfRv.setHasFixedSize(true);
         pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        ArrayList<File> pdfFiles = new ArrayList<>();
-        pdfFiles.addAll(findPdf(Environment.getExternalStorageDirectory()));
+        ArrayList<File> pdfFiles = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));
         PdfAdapter pdfAdapter = new PdfAdapter(this, pdfFiles);
         pdfRv.setAdapter(pdfAdapter);
     }
