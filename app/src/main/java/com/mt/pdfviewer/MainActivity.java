@@ -63,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<File> arrayList = new ArrayList<>();
         File[] files = file.listFiles();
 
-        for (File singleFile : files) {
-            if (singleFile.isDirectory() && !singleFile.isHidden())
-                arrayList.addAll(findPdf(singleFile));
-            else if (singleFile.getName().endsWith(".pdf"))
-                arrayList.add(singleFile);
+        if (files != null) {
+            for (File singleFile : files) {
+                if (singleFile.isDirectory() && !singleFile.isHidden())
+                    arrayList.addAll(findPdf(singleFile));
+                else if (singleFile.getName().endsWith(".pdf"))
+                    arrayList.add(singleFile);
+            }
         }
         return arrayList;
     }

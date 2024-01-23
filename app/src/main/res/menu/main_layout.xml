@@ -14,4 +14,11 @@
         android:title="Layout"
         android:icon="@drawable/view_list"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/refreshRV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Layout"
+        android:icon="@drawable/refresh"
+        app:showAsAction="always"/>
 </menu>
