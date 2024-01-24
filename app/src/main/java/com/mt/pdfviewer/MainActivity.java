@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SwipeRefreshLayout swipe;
+    private PdfAdapter pdfAdapter;
     private static final String TAG = "MainActivity";
 
 
@@ -30,6 +33,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         storageRuntimePermission();
+
+        swipe = findViewById(R.id.swipeContainer);
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pdfAdapter.clear();
+                swipe.setRefreshing(false);
+                storageRuntimePermission();
+            }
+        });
+
     }
 
     @Override
@@ -80,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         ArrayList<File> pdfFiles = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));
-        PdfAdapter pdfAdapter = new PdfAdapter(this, pdfFiles);
+        pdfAdapter = new PdfAdapter(this, pdfFiles);
         pdfRv.setAdapter(pdfAdapter);
     }
 }

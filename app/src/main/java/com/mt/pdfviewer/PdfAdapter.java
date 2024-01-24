@@ -61,6 +61,9 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         return pdfFiles.size();
     }
 
+
+
+    // Lấy trang đầu tiên làm bìa PDF
     public Bitmap renderToBitmap(File filePath) {
         Bitmap bmp = null;
         PdfiumCore pdfiumCore = new PdfiumCore(context);
@@ -79,6 +82,14 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         return bmp;
     }
 
+    public void clear() {
+
+        pdfFiles.clear();
+        notifyDataSetChanged();
+
+    }
+
+    //Đổi kích cỡ của file và đổi thành định dạng để trình bày kích cỡ file
     public static String getReadableFileSize(long size) {
         final int BYTES_IN_KILOBYTES = 1024;
         final DecimalFormat dec = new DecimalFormat("###.#");
