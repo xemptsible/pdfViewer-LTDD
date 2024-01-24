@@ -3,9 +3,15 @@ package com.mt.pdfviewer;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,11 +26,14 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipe;
+    private ImageView pdfMenuBtn;
     private PdfAdapter pdfAdapter;
+    private RecyclerView pdfRv;
     private static final String TAG = "MainActivity";
 
 
@@ -36,13 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         swipe = findViewById(R.id.swipeContainer);
 
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                pdfAdapter.clear();
-                swipe.setRefreshing(false);
-                storageRuntimePermission();
-            }
+        swipe.setOnRefreshListener(() -> {
+            pdfAdapter.clear();
+            swipe.setRefreshing(false);
+            storageRuntimePermission();
         });
 
     }
@@ -52,6 +58,29 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+/*    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add("Testing");
+        menu.add("Testing2");
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (Objects.equals(item.getTitle(), "Testing"))
+            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+        else if (Objects.equals(item.getTitle(), "Testing2"))
+            Toast.makeText(this, "Test2!", Toast.LENGTH_SHORT).show();
+        return super.onContextItemSelected(item);
+    }*/
 
     private void storageRuntimePermission() {
         Dexter.withContext(MainActivity.this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -90,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayPdf() {
-        RecyclerView pdfRv = findViewById(R.id.rvPdf);
+        pdfRv = findViewById(R.id.rvPdf);
         pdfRv.setHasFixedSize(true);
         pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 

@@ -2,13 +2,16 @@ package com.mt.pdfviewer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.pdf.PdfRenderer;
 import android.os.ParcelFileDescriptor;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -54,6 +57,22 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         holder.pdfSize.setText(getReadableFileSize(pdfSize));
         holder.pdfDateAdded.setText(dateString);
         holder.pdfTitle.setSelected(true);
+        holder.pdfMenuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        return false;
+                    }
+                });
+
+                popupMenu.inflate(R.menu.popup_rv_menu);
+                popupMenu.show();
+            }
+        });
     }
 
     @Override
@@ -115,10 +134,10 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
     }
 
 
-    public static class PdfViewHolder extends RecyclerView.ViewHolder {
+    public static class PdfViewHolder extends RecyclerView.ViewHolder{
         TextView pdfTitle, pdfDateAdded, pdfSize;
         CardView container;
-        ImageView pdfCover;
+        ImageView pdfCover, pdfMenuBtn;
 
         public PdfViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +147,35 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
             pdfCover = itemView.findViewById(R.id.coverPdf);
             pdfSize = itemView.findViewById(R.id.tvPdfSize);
             container = itemView.findViewById(R.id.containerPdf);
+            pdfMenuBtn = itemView.findViewById(R.id.popupBtn);
+
+            itemView.setOnClickListener(view -> {
+                int pos = getAdapterPosition();
+                Toast.makeText(view.getContext(), "This was clicked at position " + pos, Toast.LENGTH_SHORT).show();
+            });
+
+            itemView.setOnLongClickListener(view -> {
+                int pos = getAdapterPosition();
+                Toast.makeText(view.getContext(), "This was long clicked at position " + pos, Toast.LENGTH_SHORT).show();
+                return true;
+            });
+
+/*            pdfMenuBtn.setOnClickListener(view -> {
+                int pos = getAdapterPosition();
+                Toast.makeText(view.getContext(), "This menu was clicked at position " + pos, Toast.LENGTH_SHORT).show();
+
+                PopupMenu popupMenu = new PopupMenu(pdfMenuBtn.getContext(), itemView);
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        return false;
+                    }
+                });
+
+                popupMenu.inflate(R.menu.popup_rv_menu);
+                popupMenu.show();
+            });*/
         }
     }
 }
