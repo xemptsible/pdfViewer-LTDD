@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.artifex.mupdf.viewer.DocumentActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             swipe.setRefreshing(false);
             storageRuntimePermission();
         });
-
     }
 
     @Override
@@ -129,12 +127,5 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<File> pdfFiles = new ArrayList<>(findPdf(Environment.getExternalStorageDirectory()));
         pdfAdapter = new PdfAdapter(this, pdfFiles);
         pdfRv.setAdapter(pdfAdapter);
-    }
-
-    public void startMuPDFActivity(Uri documentUri) {
-        Intent intent = new Intent(this, DocumentActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(documentUri);
-        startActivity(intent);
     }
 }
