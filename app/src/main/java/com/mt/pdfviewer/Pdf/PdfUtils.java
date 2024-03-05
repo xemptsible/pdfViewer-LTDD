@@ -1,4 +1,4 @@
-package com.mt.pdfviewer;
+package com.mt.pdfviewer.Pdf;
 
 import java.io.File;
 import java.util.ArrayList;

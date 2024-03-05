@@ -1,4 +1,4 @@
-package com.mt.pdfviewer;
+package com.mt.pdfviewer.Pdf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.mt.pdfviewer.R;
 
 import java.io.File;
 import java.util.ArrayList;
