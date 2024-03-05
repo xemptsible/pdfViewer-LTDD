@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.mt.pdfviewer"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -41,6 +41,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.1")
     implementation("com.karumi:dexter:6.2.3")
+    api("com.artifex.mupdf:viewer:1.15.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
