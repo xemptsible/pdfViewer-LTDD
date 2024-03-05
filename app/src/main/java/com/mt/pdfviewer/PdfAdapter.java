@@ -1,9 +1,9 @@
 package com.mt.pdfviewer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.ParcelFileDescriptor;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.barteksc.pdfviewer.PDFView;
 import com.shockwave.pdfium.PdfDocument;
 import com.shockwave.pdfium.PdfiumCore;
 
@@ -138,9 +139,12 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         TextView pdfTitle, pdfDateAdded, pdfSize;
         CardView container;
         ImageView pdfCover, pdfMenuBtn;
+        PDFView pdfView;
 
         public PdfViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            int pos = getAdapterPosition();
 
             pdfTitle = itemView.findViewById(R.id.tvPdfTitle);
             pdfDateAdded = itemView.findViewById(R.id.tvPdfDateAdded);
@@ -150,12 +154,14 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
             pdfMenuBtn = itemView.findViewById(R.id.popupBtn);
 
             itemView.setOnClickListener(view -> {
-                int pos = getAdapterPosition();
-                Toast.makeText(view.getContext(), "This was clicked at position " + pos, Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "This was clicked at position " + pos + " and its name is " + pdfTitle.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), PdfViewerActivity.class);
+
+                intent.putExtra("pdfName", "/storage/emulated/0/Download/"+pdfTitle.getText());
+                view.getContext().startActivity(intent);
             });
 
             itemView.setOnLongClickListener(view -> {
-                int pos = getAdapterPosition();
                 Toast.makeText(view.getContext(), "This was long clicked at position " + pos, Toast.LENGTH_SHORT).show();
                 return true;
             });
