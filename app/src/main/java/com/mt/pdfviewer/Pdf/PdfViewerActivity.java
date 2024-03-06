@@ -21,11 +21,14 @@ public class PdfViewerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
 
-        PDFView pdfView = findViewById(R.id.pdfView);
-
         Intent intent = getIntent();
-        Log.d("PdfViewerActivity", Objects.requireNonNull(intent.getStringExtra("pdfName")));
+        String pdfFilePath = intent.getStringExtra("pdfFilePath");
+        String pdfName = Objects.requireNonNull(intent.getStringExtra("pdfName"));
 
-        pdfView.fromFile(new File(Objects.requireNonNull(intent.getStringExtra("pdfName")))).load();
+        PDFView pdfView = findViewById(R.id.pdfView);
+        getSupportActionBar().setTitle(pdfName);
+
+        pdfView.fromFile(new File(pdfFilePath)).load();
+        Log.d("PdfViewerActivity", pdfName);
     }
 }
