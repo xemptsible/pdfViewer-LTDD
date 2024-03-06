@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -153,7 +154,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
             pdfMenuBtn = itemView.findViewById(R.id.popupBtn);
 
             itemView.setOnClickListener(view -> {
-                Toast.makeText(view.getContext(), "This was clicked at position " + getAdapterPosition() + " and its name is " + pdfTitle.getText(), Toast.LENGTH_SHORT).show();
+                Log.d("PdfAdapter", "This was clicked at position " + getAdapterPosition() + " and its name is " + pdfTitle.getText());
                 Intent intent = new Intent(view.getContext(), PdfViewerActivity.class);
 
                 intent.putExtra("pdfFilePath", "/storage/emulated/0/Download/"+pdfTitle.getText());
