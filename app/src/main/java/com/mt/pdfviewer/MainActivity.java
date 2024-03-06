@@ -20,6 +20,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.mt.pdfviewer.Auth.User;
 import com.mt.pdfviewer.Pdf.PdfAdapter;
 import com.mt.pdfviewer.Pdf.PdfUtils;
 
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             swipe.setRefreshing(false);
             storageRuntimePermission();
         });
-
     }
 
     @Override

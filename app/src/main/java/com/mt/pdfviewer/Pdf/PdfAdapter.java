@@ -145,8 +145,6 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         public PdfViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            int pos = getAdapterPosition();
-
             pdfTitle = itemView.findViewById(R.id.tvPdfTitle);
             pdfDateAdded = itemView.findViewById(R.id.tvPdfDateAdded);
             pdfCover = itemView.findViewById(R.id.coverPdf);
@@ -155,19 +153,20 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
             pdfMenuBtn = itemView.findViewById(R.id.popupBtn);
 
             itemView.setOnClickListener(view -> {
-                Toast.makeText(view.getContext(), "This was clicked at position " + pos + " and its name is " + pdfTitle.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "This was clicked at position " + getAdapterPosition() + " and its name is " + pdfTitle.getText(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(view.getContext(), PdfViewerActivity.class);
 
-                intent.putExtra("pdfName", "/storage/emulated/0/Download/"+pdfTitle.getText());
+                intent.putExtra("pdfFilePath", "/storage/emulated/0/Download/"+pdfTitle.getText());
+                intent.putExtra("pdfName", pdfTitle.getText());
                 view.getContext().startActivity(intent);
             });
 
-            itemView.setOnLongClickListener(view -> {
-                Toast.makeText(view.getContext(), "This was long clicked at position " + pos, Toast.LENGTH_SHORT).show();
+            /*itemView.setOnLongClickListener(view -> {
+                Toast.makeText(view.getContext(), "This was long clicked at position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 return true;
-            });
+            });*/
 
-/*            pdfMenuBtn.setOnClickListener(view -> {
+            /*pdfMenuBtn.setOnClickListener(view -> {
                 int pos = getAdapterPosition();
                 Toast.makeText(view.getContext(), "This menu was clicked at position " + pos, Toast.LENGTH_SHORT).show();
 
