@@ -20,7 +20,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.mt.pdfviewer.Auth.User;
 import com.mt.pdfviewer.Pdf.PdfAdapter;
 import com.mt.pdfviewer.Pdf.PdfUtils;
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         swipe = findViewById(R.id.swipeContainer);
 
         swipe.setOnRefreshListener(() -> {
-            pdfAdapter.clear();
+            pdfAdapter.xoaHet();
             swipe.setRefreshing(false);
             storageRuntimePermission();
         });
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         pdfRv.setHasFixedSize(true);
         pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        pdfFiles = new ArrayList<>(pdfUtils.getPdf(Environment.getExternalStorageDirectory()));
+        pdfFiles = new ArrayList<>(pdfUtils.layPdfTrongThuMuc(Environment.getExternalStorageDirectory()));
         Log.d(TAG, String.valueOf(pdfFiles));
 
         pdfAdapter = new PdfAdapter(this, pdfFiles);
