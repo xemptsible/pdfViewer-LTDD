@@ -3,6 +3,7 @@ package com.mt.pdfviewer.Pdf;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,12 +65,16 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
-
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        return false;
+                        if (menuItem.getItemId() == R.id.removePdf) {
+                            Log.d("PdfAdapter", "Removing position of RV item at " + String.valueOf(holder.getAdapterPosition()));
+                            remove(holder.getAdapterPosition());
+                        }
+                        return true;
                     }
+
                 });
 
                 popupMenu.inflate(R.menu.popup_rv_menu);
@@ -108,6 +113,43 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
         pdfFiles.clear();
         notifyDataSetChanged();
+
+    }
+
+    public void remove(int pos) {
+
+        if (pos == pdfFiles.size() - 1) {
+            notifyItemRangeChanged(pos, pdfFiles.size());
+            notifyItemRemoved(pos);
+            pdfFiles.remove(pos);
+        }
+        else {
+            int shift = 1;
+            while (true) {
+                try {
+                    pdfFiles.remove(pos-shift);
+//                    notifyItemRangeChanged(pos, pdfFiles.size());
+                    notifyItemRemoved(pos);
+                    pdfFiles.remove(pos);
+                    notifyDataSetChanged();
+                    break;
+                } catch (IndexOutOfBoundsException e) {
+                    shift++;
+                }
+            }
+        }
+
+
+
+
+
+        String path = String.valueOf(pdfFiles.get(pos));
+        File file = new File(path);
+        boolean isDeleted = file.delete();
+        Log.d(TAG, String.valueOf(pdfFiles.get(pos)) + pos + isDeleted);
+    }
+
+    public void filter() {
 
     }
 
