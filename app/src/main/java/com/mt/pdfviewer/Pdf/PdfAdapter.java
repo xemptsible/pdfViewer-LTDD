@@ -3,6 +3,7 @@ package com.mt.pdfviewer.Pdf;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
     private static final String TAG = "PdfAdapter";
     Context context;
+    File pdfFile;
     ArrayList<File> pdfFiles;
 
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
@@ -49,6 +51,8 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
+        pdfFile = pdfFiles.get(position);
+
         long dateAdded = pdfFiles.get(position).lastModified();
         String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 .format(new Date(dateAdded));
@@ -60,21 +64,21 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         holder.pdfSize.setText(getReadableFileSize(pdfSize));
         holder.pdfDateAdded.setText(dateString);
         holder.pdfTitle.setSelected(true);
-        holder.pdfMenuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        return false;
-                    }
-                });
+        holder.pdfMenuBtn.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                if (menuItem.getItemId() == R.id.removePdf) {
+                    Log.d("PdfAdapter", "Removing position of RV item at " + holder.getAdapterPosition());
+                    pdfFiles.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, pdfFiles.size());
+                }
+                return true;
+            });
 
-                popupMenu.inflate(R.menu.popup_rv_menu);
-                popupMenu.show();
-            }
+            popupMenu.inflate(R.menu.popup_rv_menu);
+            popupMenu.show();
         });
     }
 
@@ -108,6 +112,22 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
         pdfFiles.clear();
         notifyDataSetChanged();
+
+    }
+
+//    Ném lỗi IndexOutOfBoundsException
+//    public void remove(int pos) {
+//        pdfFiles.remove(pos);
+//        notifyItemRemoved(pos);
+//        notifyItemRangeChanged(pos, pdfFiles.size());
+//
+//        String path = String.valueOf(pdfFiles.get(pos));
+//        File file = new File(path);
+//        boolean isDeleted = file.delete();
+//        Log.d(TAG, String.valueOf(pdfFiles.get(pos)) + pos + isDeleted);
+//    }
+
+    public void filter() {
 
     }
 

@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.removePdf)
+            Toast.makeText(this, "This was clicked",Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
 
