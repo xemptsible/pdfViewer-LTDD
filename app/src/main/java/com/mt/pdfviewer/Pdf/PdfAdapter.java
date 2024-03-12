@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,17 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mt.pdfviewer.R;
 
 import java.io.File;
+import java.io.FilterReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
+public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> implements Filterable {
 
     private static final String TAG = "PdfAdapter";
     Context context;
     ArrayList<File> pdfFiles;
+    ArrayList<File> pdfFilesLoc;
+    ArrayList<PdfModel> pdfModels;
+    ArrayList<PdfModel> filterPdfModels;
 
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;
@@ -66,8 +72,33 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         return pdfFiles.size();
     }
 
-    public void locTimKiem() {
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = constraint.toString();
+                if (charSequenceString.isEmpty())
+                    pdfFilesLoc = pdfFiles;
+                else {
+                    pdfFilesLoc = new ArrayList<>();
+                    for (File file : pdfFiles) {
+                        if (file.getName().toLowerCase().contains(charSequenceString))
+                            pdfFilesLoc.add(file);
+                    }
+                    pdfFilesLoc = pdfFiles;
+                }
+                FilterResults results = new FilterResults();
+                results.values = pdfFilesLoc;
+                return results;
+            }
 
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                pdfFilesLoc = (ArrayList<File>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public void xoaHet() {
@@ -99,7 +130,6 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
         }
         return dec.format(fileSize) + suffix;
     }
-
 
     public static class PdfViewHolder extends RecyclerView.ViewHolder{
         TextView pdfTitle, pdfDateAdded, pdfSize;
