@@ -80,7 +80,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charSequenceString = constraint.toString();
                 if (charSequenceString.isEmpty()) {
-                    pdfFilesLoc = pdfFiles;
+                    pdfFiles = pdfFilesLoc;
                     Log.d(TAG, "Resetting: " + pdfFiles);
                 }
                 else {
@@ -88,19 +88,19 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
                     for (File file : pdfFiles) {
                         if (file.getName().toLowerCase().contains(charSequenceString))
                             pdfFilesMoiLoc.add(file);
-                        pdfFilesLoc = pdfFilesMoiLoc;
-                        Log.d(TAG, "File matched: " + pdfFilesLoc);
+                        pdfFiles = pdfFilesMoiLoc;
+                        Log.d(TAG, "File matched: " + pdfFilesMoiLoc);
                     }
                 }
                 FilterResults results = new FilterResults();
-                results.values = pdfFilesLoc;
+                results.values = pdfFiles;
 //                Log.d(TAG, "performFiltering: " + results.values);
                 return results;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                pdfFilesLoc = (ArrayList<File>) results.values;
+                pdfFiles = (ArrayList<File>) results.values;
 //                Log.d(TAG, "publishResults: " + pdfFilesLoc);
                 notifyDataSetChanged();
             }
