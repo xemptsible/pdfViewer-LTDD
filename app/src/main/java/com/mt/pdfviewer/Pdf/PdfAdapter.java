@@ -38,6 +38,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;
         this.pdfFiles = pdfFiles;
+        this.pdfFilesLoc = pdfFiles;
     }
 
     @NonNull
@@ -78,24 +79,29 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charSequenceString = constraint.toString();
-                if (charSequenceString.isEmpty())
+                if (charSequenceString.isEmpty()) {
                     pdfFilesLoc = pdfFiles;
+                    Log.d(TAG, "Resetting: " + pdfFiles);
+                }
                 else {
-                    pdfFilesLoc = new ArrayList<>();
+                    ArrayList<File> pdfFilesMoiLoc = new ArrayList<>();
                     for (File file : pdfFiles) {
                         if (file.getName().toLowerCase().contains(charSequenceString))
-                            pdfFilesLoc.add(file);
+                            pdfFilesMoiLoc.add(file);
+                        pdfFilesLoc = pdfFilesMoiLoc;
+                        Log.d(TAG, "File matched: " + pdfFilesLoc);
                     }
-                    pdfFilesLoc = pdfFiles;
                 }
                 FilterResults results = new FilterResults();
                 results.values = pdfFilesLoc;
+//                Log.d(TAG, "performFiltering: " + results.values);
                 return results;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 pdfFilesLoc = (ArrayList<File>) results.values;
+//                Log.d(TAG, "publishResults: " + pdfFilesLoc);
                 notifyDataSetChanged();
             }
         };

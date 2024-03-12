@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,6 +22,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.mt.pdfviewer.Pdf.PdfAdapter;
+import com.mt.pdfviewer.Pdf.PdfModel;
 import com.mt.pdfviewer.Pdf.PdfUtils;
 
 import java.io.File;
@@ -47,7 +49,60 @@ public class MainActivity extends AppCompatActivity {
             pdfAdapter.xoaHet();
             swipe.setRefreshing(false);
             storageRuntimePermission();
+            khoiTaoRV();
         });
+
+        khoiTaoRV();
+        SearchView searchView = findViewById(R.id.searchView);
+
+        runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                pdfAdapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                pdfAdapter.getFilter().filter(newText);
+                return true;
+            }
+        }));
+
+    }
+
+    private void khoiTaoRV() {
+        RecyclerView pdfRv = findViewById(R.id.rvPdf);
+        pdfRv.setHasFixedSize(true);
+        pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        pdfAdapter = new PdfAdapter(this, pdfFiles);
+        pdfRv.setAdapter(pdfAdapter);
+    }
+
+    private void layPdfTrongThuMuc() {
+        pdfFiles = new ArrayList<>(PdfUtils.layPdfTrongThuMuc(Environment.getExternalStorageDirectory()));
+        Log.d(TAG, String.valueOf(pdfFiles));
+    }
+
+    private void storageRuntimePermission() {
+        Dexter.withContext(MainActivity.this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        layPdfTrongThuMuc();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                        Toast.makeText(MainActivity.this, "Permission is required", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     @Override
@@ -63,35 +118,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayPdf() {
-        RecyclerView pdfRv = findViewById(R.id.rvPdf);
-        pdfRv.setHasFixedSize(true);
-        pdfRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        pdfFiles = new ArrayList<>(pdfUtils.layPdfTrongThuMuc(Environment.getExternalStorageDirectory()));
-        Log.d(TAG, String.valueOf(pdfFiles));
-
-        pdfAdapter = new PdfAdapter(this, pdfFiles);
-        pdfRv.setAdapter(pdfAdapter);
-    }
-
-    private void storageRuntimePermission() {
-        Dexter.withContext(MainActivity.this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        displayPdf();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        Toast.makeText(MainActivity.this, "Permission is required", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check();
-    }
 }
