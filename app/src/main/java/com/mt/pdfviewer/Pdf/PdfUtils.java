@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class PdfUtils {
-    public static ArrayList<File> layPdfTrongThuMuc(File file) {
+    public ArrayList<File> layPdfTrongThuMuc(File file) {
 
         ArrayList<File> arrayList = new ArrayList<>();
         File[] files = file.listFiles();

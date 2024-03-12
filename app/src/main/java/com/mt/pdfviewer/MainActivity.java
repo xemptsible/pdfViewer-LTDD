@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        storageRuntimePermission();
-
+        SearchView searchView = findViewById(R.id.searchView);
         swipe = findViewById(R.id.swipeContainer);
+        storageRuntimePermission();
 
         swipe.setOnRefreshListener(() -> {
             pdfAdapter.xoaHet();
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
             storageRuntimePermission();
             khoiTaoRV();
         });
+        khoiTaoTimKiem(searchView);
+    }
 
-        khoiTaoRV();
-        SearchView searchView = findViewById(R.id.searchView);
-
+    private void khoiTaoTimKiem(SearchView searchView) {
         runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         }));
-
     }
 
     private void khoiTaoRV() {
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void layPdfTrongThuMuc() {
-        pdfFiles = new ArrayList<>(PdfUtils.layPdfTrongThuMuc(Environment.getExternalStorageDirectory()));
+        pdfFiles = new ArrayList<>(pdfUtils.layPdfTrongThuMuc(Environment.getExternalStorageDirectory()));
         Log.d(TAG, String.valueOf(pdfFiles));
     }
 
@@ -91,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                         layPdfTrongThuMuc();
+                        khoiTaoRV();
                     }
 
                     @Override
