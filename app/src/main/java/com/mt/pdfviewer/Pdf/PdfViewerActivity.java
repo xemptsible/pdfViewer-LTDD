@@ -26,9 +26,9 @@ public class PdfViewerActivity extends AppCompatActivity {
         String pdfName = Objects.requireNonNull(intent.getStringExtra("pdfName"));
 
         PDFView pdfView = findViewById(R.id.pdfView);
-        getSupportActionBar().setTitle(pdfName);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(pdfName);
 
-        pdfView.fromFile(new File(pdfFilePath)).load();
+        pdfView.fromFile(new File(Objects.requireNonNull(pdfFilePath))).load();
         Log.d("PdfViewerActivity", pdfName);
     }
 }
