@@ -22,7 +22,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.mt.pdfviewer.Pdf.PdfAdapter;
-import com.mt.pdfviewer.Pdf.PdfModel;
 import com.mt.pdfviewer.Pdf.PdfUtils;
 
 import java.io.File;
@@ -55,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void khoiTaoTimKiem(SearchView searchView) {
+//        Ném lỗi android.view.ViewRoot$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+//        https://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi
         runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -113,9 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.removePdf)
+        if (item.getItemId() == R.id.hidePdf)
             Toast.makeText(this, "This was clicked",Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
-
 }

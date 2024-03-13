@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mt.pdfviewer.R;
 
 import java.io.File;
-import java.io.FilterReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +31,8 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
     Context context;
     ArrayList<File> pdfFiles;
     ArrayList<File> pdfFilesLoc;
-    ArrayList<PdfModel> pdfModels;
-    ArrayList<PdfModel> filterPdfModels;
+//    ArrayList<PdfModel> pdfModels;
+//    ArrayList<PdfModel> filterPdfModels;
 
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;
@@ -49,16 +48,16 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
 
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
-        holder.rangBuocThuocTinh(pdfFiles.get(position));
+        holder.rangBuocThuocTinh(pdfFilesLoc.get(position));
 
         holder.pdfMenuBtn.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
-                if (menuItem.getItemId() == R.id.removePdf) {
+                if (menuItem.getItemId() == R.id.hidePdf) {
                     Log.d("PdfAdapter", "Removing RV item at position" + holder.getAdapterPosition());
-                    pdfFiles.remove(position);
+                    pdfFilesLoc.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, pdfFiles.size());
+                    notifyItemRangeChanged(position, pdfFilesLoc.size());
                 }
                 return true;
             });
@@ -70,39 +69,38 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
 
     @Override
     public int getItemCount() {
-        return pdfFiles.size();
+        return pdfFilesLoc.size();
     }
 
     @Override
     public Filter getFilter() {
         return new Filter() {
+            FilterResults results = new FilterResults();
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charSequenceString = constraint.toString();
-                if (charSequenceString.isEmpty()) {
-                    pdfFiles = pdfFilesLoc;
-                    Log.d(TAG, "Resetting: " + pdfFiles);
-                }
-                else {
+                if (!charSequenceString.isEmpty()) {
                     ArrayList<File> pdfFilesMoiLoc = new ArrayList<>();
+
                     for (File file : pdfFiles) {
                         if (file.getName().toLowerCase().contains(charSequenceString))
                             pdfFilesMoiLoc.add(file);
-                        pdfFiles = pdfFilesMoiLoc;
-                        Log.d(TAG, "File matched: " + pdfFilesMoiLoc);
                     }
+                    results.values = pdfFilesMoiLoc;
+                    Log.d(TAG, "ArrayList filtered: " + results.values);
+                } else {
+                    results.values = pdfFiles;
+                    Log.d(TAG, "ArrayList reset");
                 }
-                FilterResults results = new FilterResults();
-                results.values = pdfFiles;
-//                Log.d(TAG, "performFiltering: " + results.values);
                 return results;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                pdfFiles = (ArrayList<File>) results.values;
+                pdfFilesLoc = (ArrayList<File>) results.values;
 //                Log.d(TAG, "publishResults: " + pdfFilesLoc);
                 notifyDataSetChanged();
+                Log.d(TAG, "Notified in publish!");
             }
         };
     }
@@ -113,7 +111,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
     }
 
     //Đổi kích cỡ của file và đổi thành định dạng để trình bày kích cỡ file
-    public static String getReadableFileSize(long size) {
+    public static String layCoDinhDangFile(long size) {
         final int BYTES_IN_KILOBYTES = 1024;
         final DecimalFormat dec = new DecimalFormat("###.#");
         final String KILOBYTES = " KB";
@@ -159,7 +157,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
 
             pdfTitle.setText(item.getName());
             pdfCover.setImageBitmap(PdfUtils.xuatRaBitmap(new File(item.getAbsolutePath()), itemView.getContext()));
-            pdfSize.setText(getReadableFileSize(pdfFileSize));
+            pdfSize.setText(layCoDinhDangFile(pdfFileSize));
             pdfDateAdded.setText(dateString);
             pdfTitle.setSelected(true);
 
