@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,8 @@ import com.mt.pdfviewer.Utils;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edUsername, edMatKhau;
-    Button btnDN, btnDK;
+    Button btnDN;
+    TextView btnDK;
     SharedPreferences preferences;
     Gson gson = new Gson();
     @Override
@@ -28,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences(Utils.PREF_APP, Context.MODE_PRIVATE);
 
-        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setTitle("");
 
         edUsername = findViewById(R.id.edTenDN);
         edMatKhau = findViewById(R.id.edMatKhauDN);

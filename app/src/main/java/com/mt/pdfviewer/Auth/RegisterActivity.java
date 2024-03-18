@@ -1,14 +1,16 @@
 package com.mt.pdfviewer.Auth;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mt.pdfviewer.R;
@@ -25,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        getSupportActionBar().setTitle("Register");
+        nutUpVeLogin();
 
         edTenDK = findViewById(R.id.edTenDK);
         edMK_DK = findViewById(R.id.edMatKhauDK);
@@ -59,12 +61,22 @@ public class RegisterActivity extends AppCompatActivity {
                     && edXacNhanMK.length() > 6) {
                 user.setUsername(usernameMoi);
                 user.setPassword(xacNhanMK);
+
                 luuGiuThongTinTK(user);
                 quayVeLogin();
                 finish();
             }
         });
     }
+
+    private void nutUpVeLogin() {
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+    }
+
     private void luuGiuThongTinTK(User user) {
         SharedPreferences.Editor editor = preferences.edit();
         String userJson = gson.toJson(user);
@@ -74,5 +86,14 @@ public class RegisterActivity extends AppCompatActivity {
     private void quayVeLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        else
+            return false;
+        return super.onOptionsItemSelected(item);
     }
 }
