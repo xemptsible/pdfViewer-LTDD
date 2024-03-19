@@ -1,73 +1,104 @@
 package com.mt.pdfviewer.Auth;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
+import android.util.Patterns;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.mt.pdfviewer.MainActivity;
-import com.mt.pdfviewer.R;
-import com.mt.pdfviewer.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mt.pdfviewer.databinding.ActivityLoginBinding;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText edUsername, edMatKhau;
-    Button btnDN;
-    TextView btnDK;
-    SharedPreferences preferences;
-    Gson gson = new Gson();
+    private ActivityLoginBinding binding;
+    private FirebaseAuth firebaseAuth;
+    private String email, matKhau;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View registerView = binding.getRoot();
+        setContentView(registerView);
 
-        preferences = getSharedPreferences(Utils.PREF_APP, Context.MODE_PRIVATE);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setTitle("");
 
-        edUsername = findViewById(R.id.edTenDN);
-        edMatKhau = findViewById(R.id.edMatKhauDN);
-        btnDN = findViewById(R.id.btnDN);
-        btnDK = findViewById(R.id.btnChuyenSangDK);
-
-        btnDK.setOnClickListener(view -> {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
+        binding.btnChuyenSangDK.setOnClickListener(v -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+            finish();
         });
 
-        btnDN.setOnClickListener(view -> {
-            String thongTinNgDungSP = preferences.getString(Utils.KEY_USER, null);
-            User userJson = gson.fromJson(thongTinNgDungSP, User.class);
-
-            String username = edUsername.getText().toString();
-            String password = edMatKhau.getText().toString();
-
-            if (userJson == null) {
-                Toast.makeText(this, "Tài khoản chưa tạo", Toast.LENGTH_SHORT).show();
-            }
-            if (edUsername.length() > 6 && edMatKhau.length() > 6 && coDungThongTin(username, password, userJson)){
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else {
-//                Toast.makeText(this, "Vui lòng nhập thông tin", Toast.LENGTH_LONG).show();
-                edUsername.setError("Vui lòng nhập tên đăng nhập");
-                edMatKhau.setError("Vui lòng nhập mật khẩu");
-            };
-
-            Log.d("LoginActivity", "Button is clicked. User: " + username + " Pass: " + password);
+        binding.btnDN.setOnClickListener(v -> {
+            xacThucData();
         });
+
     }
 
-    private boolean coDungThongTin(String username, String password, User userJson) {
-        return username.equals(userJson.getUsername()) || password.equals(userJson.getPassword());
+    private void xacThucData() {
+        EditText edEmailDN = binding.edEmailDN,
+                edMatKhau = binding.edMatKhauDN;
+
+        email = edEmailDN.getText().toString().trim();
+        matKhau = edMatKhau.getText().toString().trim();
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edEmailDN.setError("Vui lòng nhập email");
+        }
+        if (matKhau.isEmpty()) {
+            edMatKhau.setError("Vui lòng nhập mật khẩu");
+        }
+        else {
+            firebaseAuth.signInWithEmailAndPassword(email, matKhau)
+                    .addOnSuccessListener(authResult -> {
+                        kiemTraNguoiDung();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Đăng nhập không thành công. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
+        }
+    }
+
+    private void kiemTraNguoiDung() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
+
+        userRef.child(firebaseUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String phanQuyen = snapshot.child("phanQuyen").getValue(String.class);
+                            if (Objects.equals(phanQuyen, "user")) {
+                                startActivity(new Intent(LoginActivity.this, UserDashboardActivity.class));
+                                finish();
+                            } else if (Objects.equals(phanQuyen, "admin")) {
+                                startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+                                finish();
+                            }
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

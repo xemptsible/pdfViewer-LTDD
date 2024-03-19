@@ -1,41 +1,81 @@
 package com.mt.pdfviewer.Auth;
 
 public class User {
-    private String username;
-    private String password;
-    private String avatar;
-
-    public User(String username, String password, String avatar) {
-        this.username = username;
-        this.password = password;
-        this.avatar = avatar;
-    }
+    private String uid;
+    private String tenTaiKhoan;
+    private String email;
+    private String matKhau;
+    private String hinhCaNhan;
+    private int laAdmin;
+    private long dauThoiGian;
 
     public User() {
 
     }
 
-    public String getUsername() {
-        return username;
+    public User(String uid, String tenTaiKhoan, String email, String matKhau, String hinhCaNhan, int laAdmin, long dauThoiGian) {
+        this.uid = uid;
+        this.tenTaiKhoan = tenTaiKhoan;
+        this.email = email;
+        this.matKhau = matKhau;
+        this.hinhCaNhan = hinhCaNhan;
+        this.laAdmin = laAdmin;
+        this.dauThoiGian = dauThoiGian;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUid() {
+        return uid;
     }
 
-    public String getPassword() {
-        return password;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getTenTaiKhoan() {
+        return tenTaiKhoan;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public void setTenTaiKhoan(String tenTaiKhoan) {
+        this.tenTaiKhoan = tenTaiKhoan;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
+    }
+
+    public String getHinhCaNhan() {
+        return hinhCaNhan;
+    }
+
+    public void setHinhCaNhan(String hinhCaNhan) {
+        this.hinhCaNhan = hinhCaNhan;
+    }
+
+    public int getLaAdmin() {
+        return laAdmin;
+    }
+
+    public void setLaAdmin(int laAdmin) {
+        this.laAdmin = laAdmin;
+    }
+
+    public long getDauThoiGian() {
+        return dauThoiGian;
+    }
+
+    public void setDauThoiGian(long dauThoiGian) {
+        this.dauThoiGian = dauThoiGian;
     }
 }

@@ -4,96 +4,134 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.mt.pdfviewer.R;
-import com.mt.pdfviewer.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mt.pdfviewer.databinding.ActivityRegisterBinding;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText edTenDK, edMK_DK, edXacNhanMK;
-    Button btnDKMoi;
-    SharedPreferences preferences;
-    Gson gson = new Gson();
+    private final static String REGISTER_TAG = "RegisterActivity";
+    private ActivityRegisterBinding binding;
+    private FirebaseAuth firebaseAuth;
+    String ten, email, matKhau, xacNhanMK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
 
-        nutUpVeLogin();
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        View registerView = binding.getRoot();
+        setContentView(registerView);
 
-        edTenDK = findViewById(R.id.edTenDK);
-        edMK_DK = findViewById(R.id.edMatKhauDK);
-        edXacNhanMK = findViewById(R.id.edXacNhanMK_DK);
+        // Khởi tạo Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        btnDKMoi = findViewById(R.id.btnXacNhanDK);
-
-        btnDKMoi.setOnClickListener(view -> {
-            preferences = getSharedPreferences(Utils.PREF_APP, Context.MODE_PRIVATE);
-            User user = new User();
-            String usernameMoi = edTenDK.getText().toString();
-            String matKhauMoi = edMK_DK.getText().toString();
-            String xacNhanMK = edXacNhanMK.getText().toString();
-
-            if (edTenDK.length() <=6) {
-                edTenDK.setError("Tên đăng nhập phải dài hơn 6 ký tự");
-            }
-            if (edMK_DK.length() <=6 || edXacNhanMK.length() <=6) {
-                edMK_DK.setError("Mật khẩu phải dài hơn 6 ký tự");
-                edXacNhanMK.setError("Mật khẩu phải dài hơn 6 ký tự");
-            }
-            if (!matKhauMoi.equals(xacNhanMK)
-                    && !matKhauMoi.isEmpty()
-                    && !xacNhanMK.isEmpty()) {
-                edMK_DK.setError("Mật khẩu không trùng");
-                edXacNhanMK.setError("Mật khẩu không trùng");
-            }
-            else if (edTenDK.length() > 6
-                    && matKhauMoi.equals(xacNhanMK)
-                    && edMK_DK.length() > 6
-                    && edXacNhanMK.length() > 6) {
-                user.setUsername(usernameMoi);
-                user.setPassword(xacNhanMK);
-
-                luuGiuThongTinTK(user);
-                quayVeLogin();
-                finish();
-            }
+        binding.btnXacNhanDK.setOnClickListener(v -> {
+            xacNhanThongTin();
         });
-    }
 
-    private void nutUpVeLogin() {
         ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setTitle("");
+        Objects.requireNonNull(actionBar).setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
     }
 
-    private void luuGiuThongTinTK(User user) {
-        SharedPreferences.Editor editor = preferences.edit();
-        String userJson = gson.toJson(user);
-        editor.putString(Utils.KEY_USER, userJson);
-        editor.commit();
-    }
-    private void quayVeLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
-        else
-            return false;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void xacNhanThongTin() {
+        // Ánh xạ dữ liệu
+        EditText edTenDK = binding.edTenDK,
+                edEmailDK = binding.edEmailDK,
+                edMatKhauDK = binding.edMatKhauDK,
+                edXacNhanMKDK = binding.edXacNhanMKDK;
+
+        ten = edTenDK.getText().toString().trim();
+        email = edEmailDK.getText().toString().trim();
+        matKhau = edMatKhauDK.getText().toString().trim();
+        xacNhanMK = edXacNhanMKDK.getText().toString().trim();
+
+        // Xác thực thông tin
+        if (ten.isEmpty()) {
+            edTenDK.setError("Vui lòng nhập tên");
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.isEmpty()) {
+            edEmailDK.setError("Vui lòng nhập email");
+        }
+        if (matKhau.isEmpty() || matKhau.length() < 6) {
+            edMatKhauDK.setError("Vui lòng nhập mật khẩu từ 6 ký tự trở lên");
+        }
+        if (xacNhanMK.isEmpty()) {
+            edXacNhanMKDK.setError("Vui lòng xác nhận mật khẩu");
+        }
+        else if (!matKhau.equals(xacNhanMK)) {
+            edXacNhanMKDK.setError("Mật khẩu không trùng");
+        }
+        else {
+            taoTaiKhoan();
+        }
+    }
+
+    private void taoTaiKhoan() {
+        Toast.makeText(this, "Đang tạo tài khoản", Toast.LENGTH_LONG).show();
+
+        firebaseAuth
+                .createUserWithEmailAndPassword(email, matKhau)
+                .addOnSuccessListener(authResult -> {
+                    taoTaiKhoanTrongFirebase();
+                    Log.d(REGISTER_TAG, "Email added in Auth!");
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Không thành công. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void taoTaiKhoanTrongFirebase() {
+        String uid = firebaseAuth.getUid();
+
+        HashMap<String, Object> userHashMap = new HashMap<>();
+        userHashMap.put("uid", uid);
+        userHashMap.put("email", email);
+        userHashMap.put("tenNguoiDung", ten);
+        userHashMap.put("hinhNguoiDung", ten);
+        if (ten.contains("admin") && email.contains("admin"))
+        {
+            userHashMap.put("phanQuyen", "admin");
+        }
+        else
+        {
+            userHashMap.put("phanQuyen", "user");
+        }
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
+        userRef.child(Objects.requireNonNull(uid))
+                .setValue(userHashMap)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "Tạo thành công thành công!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this, LoginActivity.class));
+                    firebaseAuth.signOut();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }

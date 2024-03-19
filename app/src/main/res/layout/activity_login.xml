@@ -16,12 +16,13 @@
         android:src="@drawable/app_icon"/>
 
     <EditText
-        android:id="@+id/edTenDN"
+        android:id="@+id/edEmailDN"
+        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/baseline_account_circle_24"
+        android:drawableStart="@drawable/baseline_alternate_email_24"
         android:drawablePadding="8dp"
-        android:hint="Nhập tên người dùng" />
+        android:hint="Nhập email" />
 
     <EditText
         android:id="@+id/edMatKhauDN"
@@ -34,17 +35,21 @@
 
     <Button
         android:id="@+id/btnDN"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#19C1AD"
+        android:backgroundTint="#5C8DCD"
+        android:textColor="@color/white"
         android:text="Đăng nhập" />
     <Button
         android:id="@+id/btnChuyenSangDK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:fontFamily="sans-serif"
         android:padding="8dp"
         android:background="?android:attr/selectableItemBackground"
+        android:textColor="#8F8F8F"
         android:text="Chưa có tài khoản? Đăng ký"/>
 
 </LinearLayout>
