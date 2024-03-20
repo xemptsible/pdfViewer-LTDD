@@ -92,6 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void taoTaiKhoanTrongFirebase() {
         String uid = firebaseAuth.getUid();
 
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
+
         HashMap<String, Object> userHashMap = new HashMap<>();
         userHashMap.put("uid", uid);
         userHashMap.put("email", email);
@@ -106,11 +108,10 @@ public class RegisterActivity extends AppCompatActivity {
             userHashMap.put("phanQuyen", "user");
         }
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
-        userRef.child(Objects.requireNonNull(uid))
+        userRef
                 .setValue(userHashMap)
                 .addOnSuccessListener(unused -> {
-                    Toast.makeText(this, "Tạo thành công thành công!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Tạo thể loại thành công!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(this, LoginActivity.class));
                     firebaseAuth.signOut();
                     finish();
