@@ -1,4 +1,4 @@
-package com.mt.pdfviewer.Auth;
+package com.mt.pdfviewer.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -110,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         HashMap<String, Object> userHashMap = new HashMap<>();
         userHashMap.put("uid", uid);
         userHashMap.put("email", email);
-        userHashMap.put("tenNguoiDung", ten);
+        userHashMap.put("tenNguoiDung", "");
         userHashMap.put("hinhNguoiDung", ten);
         if (ten.contains("admin") && email.contains("admin"))
         {

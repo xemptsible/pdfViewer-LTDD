@@ -1,4 +1,4 @@
-package com.mt.pdfviewer.Auth;
+package com.mt.pdfviewer.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mt.pdfviewer.databinding.ActivityLoginBinding;
+import com.mt.pdfviewer.main.AdminDashboardActivity;
+import com.mt.pdfviewer.main.UserDashboardActivity;
 
 import java.util.Objects;
 
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
         binding.btnChuyenSangDK.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));

@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,12 +15,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mt.pdfviewer.Auth.AdminDashboardActivity;
-import com.mt.pdfviewer.Auth.LoginActivity;
-import com.mt.pdfviewer.Auth.UserDashboardActivity;
+import com.mt.pdfviewer.auth.LoginActivity;
+import com.mt.pdfviewer.main.AdminDashboardActivity;
+import com.mt.pdfviewer.main.UserDashboardActivity;
 
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.mt.pdfviewer.Pdf;
+package com.mt.pdfviewer.pdf;
 
 import android.content.Context;
 import android.graphics.Bitmap;
