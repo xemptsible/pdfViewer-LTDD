@@ -45,10 +45,12 @@
         </activity>
         <activity
             android:name=".auth.LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".auth.RegisterActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".pdf.PdfViewerActivity"
             android:exported="false" />

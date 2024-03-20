@@ -38,21 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
         // Khởi tạo Firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
-        binding.btnXacNhanDK.setOnClickListener(v -> {
-            xacNhanThongTin();
-        });
-
-        ActionBar actionBar = getSupportActionBar();
-        Objects.requireNonNull(actionBar).setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
+        binding.btnXacNhanDK.setOnClickListener(v -> xacNhanThongTin());
+        binding.backImageBtn.setOnClickListener(v -> finish());
     }
 
     private void xacNhanThongTin() {

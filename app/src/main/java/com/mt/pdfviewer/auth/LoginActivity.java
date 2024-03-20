@@ -36,11 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle("");
-
         binding.btnChuyenSangDK.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
-            finish();
         });
 
         binding.btnDN.setOnClickListener(v -> {
