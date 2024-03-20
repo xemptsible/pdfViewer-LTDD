@@ -21,8 +21,8 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.mt.pdfviewer.Pdf.PdfAdapter;
-import com.mt.pdfviewer.Pdf.PdfUtils;
+import com.mt.pdfviewer.pdf.PdfAdapter;
+import com.mt.pdfviewer.pdf.PdfUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipe;
     private PdfAdapter pdfAdapter;
     public ArrayList<File> pdfFiles;
-    public PdfUtils pdfUtils = new PdfUtils();
+    private final PdfUtils pdfUtils = new PdfUtils();
     private static final String TAG = "MainActivity";
 
 

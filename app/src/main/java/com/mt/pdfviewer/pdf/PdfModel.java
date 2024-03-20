@@ -1,4 +1,4 @@
-package com.mt.pdfviewer.Pdf;
+package com.mt.pdfviewer.pdf;
 
 import androidx.annotation.NonNull;
 

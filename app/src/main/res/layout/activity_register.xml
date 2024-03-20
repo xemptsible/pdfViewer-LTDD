@@ -1,45 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="16dp"
-    tools:context=".Auth.RegisterActivity">
+    tools:context=".auth.RegisterActivity">
+
+    <ImageButton
+        android:id="@+id/backImageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/app_icon"/>
+        android:layout_marginTop="60dp"
+        android:src="@drawable/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:layout_marginTop="40dp"
         android:id="@+id/edTenDK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/baseline_account_circle_24"
         android:drawablePadding="8dp"
-        android:hint="Nhập tên người dùng" />
+        android:hint="Nhập tên"
+        android:inputType="text"
+        android:maxLines="1"
+        android:minLines="1"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/edEmailDK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/baseline_alternate_email_24"
+        android:drawablePadding="8dp"
+        android:hint="Nhập email"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:minLines="1"
+        app:layout_constraintTop_toBottomOf="@+id/edTenDK"
+        tools:layout_editor_absoluteX="16dp" />
+
     <EditText
         android:id="@+id/edMatKhauDK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/password_key"
         android:drawablePadding="8dp"
-        android:hint="Nhập mật khẩu" />
+        android:hint="Nhập mật khẩu"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edEmailDK"
+        tools:layout_editor_absoluteX="16dp" />
+
     <EditText
         android:id="@+id/edXacNhanMK_DK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/password_key"
         android:drawablePadding="8dp"
-        android:hint="Nhập lại mật khẩu" />
+        android:hint="Nhập lại mật khẩu"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edMatKhauDK"
+        tools:layout_editor_absoluteX="16dp" />
+
     <Button
         android:id="@+id/btnXacNhanDK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#19C1AD"
-        android:text="Đăng ký"/>
-</LinearLayout>
+        android:backgroundTint="#5C8DCD"
+        android:layout_marginTop="16dp"
+        android:text="Đăng ký"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edXacNhanMK_DK" />
+</androidx.constraintlayout.widget.ConstraintLayout>
