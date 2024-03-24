@@ -90,15 +90,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void taoTaiKhoanTrongFirebase() {
-        String uid = firebaseAuth.getUid();
+
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
-
+        String uid =firebaseAuth.getUid();
         HashMap<String, Object> userHashMap = new HashMap<>();
         userHashMap.put("uid", uid);
         userHashMap.put("email", email);
-        userHashMap.put("tenNguoiDung", "");
-        userHashMap.put("hinhNguoiDung", ten);
+        userHashMap.put("matKhau", matKhau);
+        userHashMap.put("tenNguoiDung", ten);
+        userHashMap.put("hinhNguoiDung", "");
+
         if (ten.contains("admin") && email.contains("admin"))
         {
             userHashMap.put("phanQuyen", "admin");
@@ -109,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         userRef
+                .child(Objects.requireNonNull(uid))
                 .setValue(userHashMap)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(this, "Tạo thể loại thành công!", Toast.LENGTH_LONG).show();
