@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .child(Objects.requireNonNull(uid))
                 .setValue(userHashMap)
                 .addOnSuccessListener(unused -> {
-                    Toast.makeText(this, "Tạo thể loại thành công!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Tạo tài khoản thành công!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(this, LoginActivity.class));
                     firebaseAuth.signOut();
                     finish();
