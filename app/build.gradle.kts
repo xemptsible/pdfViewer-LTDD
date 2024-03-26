@@ -46,7 +46,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     implementation("com.karumi:dexter:6.2.3")
-    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.1")
+    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation ("com.google.android.material:material:1.11.0")
