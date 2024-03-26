@@ -9,49 +9,96 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mt.pdfviewer.R;
+import com.mt.pdfviewer.adapter.CategoryAdapter;
 import com.mt.pdfviewer.auth.LoginActivity;
 import com.mt.pdfviewer.databinding.ActivityAdminDashboardBinding;
 import com.mt.pdfviewer.main.admin.AdminThemCategoryActivity;
+import com.mt.pdfviewer.main.admin.AdminThemPdfActivity;
+import com.mt.pdfviewer.model.CategoryModel;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class AdminDashboardActivity extends AppCompatActivity {
     private ActivityAdminDashboardBinding binding;
     private FirebaseAuth firebaseAuth;
-    private AlertDialog.Builder dialog;
+    private RecyclerView rvCategory;
+    private DatabaseReference theLoaiRef;
+    private ArrayList<CategoryModel> categoryModels;
+    private CategoryAdapter categoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_dashboard);
 
         binding = ActivityAdminDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
+        rvCategory = binding.rvCategoryAdmin;
+
         binding.btnThemCategory.setOnClickListener(v -> {
             startActivity(new Intent(this, AdminThemCategoryActivity.class));
         });
 
+        binding.btnThemSach.setOnClickListener((v -> {
+            startActivity(new Intent(this, AdminThemPdfActivity.class));
+        }));
+
+        if (firebaseAuth == null) {
+            firebaseAuth = FirebaseAuth.getInstance();
+        }
 
         xacThucNguoiDung();
+        taiTheLoai();
+
 
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setTitle("Admin Dashboard");
     }
     private void xacThucNguoiDung() {
-        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }
+
+    private void taiTheLoai() {
+        categoryModels = new ArrayList<>();
+        theLoaiRef = FirebaseDatabase.getInstance().getReference("TheLoai");
+        theLoaiRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                categoryModels.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    CategoryModel categoryModel = ds.getValue(CategoryModel.class);
+                    categoryModels.add(categoryModel);
+                }
+                categoryAdapter = new CategoryAdapter(AdminDashboardActivity.this, categoryModels);
+                rvCategory.setAdapter(categoryAdapter);
+                rvCategory.setHasFixedSize(true);
+                rvCategory.setLayoutManager(new LinearLayoutManager(AdminDashboardActivity.this, LinearLayoutManager.VERTICAL, false));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard_layout, menu);

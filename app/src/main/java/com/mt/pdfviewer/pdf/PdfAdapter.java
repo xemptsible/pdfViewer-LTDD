@@ -146,7 +146,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
             pdfDateAdded = itemView.findViewById(R.id.tvPdfDateAdded);
             pdfCover = itemView.findViewById(R.id.coverPdf);
             pdfSize = itemView.findViewById(R.id.tvPdfSize);
-            container = itemView.findViewById(R.id.containerPdf);
+            container = itemView.findViewById(R.id.pdf_card);
             pdfMenuBtn = itemView.findViewById(R.id.popupBtn);
         }
         private void rangBuocThuocTinh(final File item) {
