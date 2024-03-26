@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +33,6 @@ public class AdminThemPdfActivity extends AppCompatActivity {
     private final static int PDF_PICK_CODE = 1;
     private ActivityAdminThemPdfBinding binding;
     private ArrayList<String> categoryModelIds, categoryModelTheLoai;
-    private FirebaseAuth firebaseAuth;
     private Uri pdfUri = null;
     private String tenTruyen, moTa, idTheLoaiChon, tenTheLoaiChon;
 
@@ -45,13 +42,9 @@ public class AdminThemPdfActivity extends AppCompatActivity {
         binding = ActivityAdminThemPdfBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ActionBar actionBar =getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Thêm truyện mới");
-
-        if (firebaseAuth == null) {
-            firebaseAuth = FirebaseAuth.getInstance();
-        }
 
         taiTheLoaiVaoArray();
 
@@ -62,10 +55,7 @@ public class AdminThemPdfActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "Chọn PDF"), PDF_PICK_CODE);
         });
 
-        binding.tvCategoryPicker.setOnClickListener(v -> {
-            taoAlertDialogChoPicker();
-        });
-
+        binding.tvCategoryPicker.setOnClickListener(v -> taoAlertDialogChoPicker());
         binding.btnDangPdfMoi.setOnClickListener(v -> xacThucTruyen());
     }
 
@@ -104,32 +94,7 @@ public class AdminThemPdfActivity extends AppCompatActivity {
                         Log.d(TAG, "Đăng thành công vào storage");
                     });
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void dangTruyenLenDatabase(String duongUrlPdf) {
-        Log.d(TAG, "Đang đăng truyện vào realtime database");
-        HashMap<String, Object> truyenHashMap = new HashMap<>();
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Truyen");
-        String uid = ref.push().getKey();
-        truyenHashMap.put("uid", uid);
-        truyenHashMap.put("tenTruyen", tenTruyen);
-        truyenHashMap.put("moTa", moTa);
-        truyenHashMap.put("theLoai_uid", idTheLoaiChon);
-        truyenHashMap.put("duongUrlTruyen", duongUrlPdf);
-        truyenHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
-
-        ref.push()
-                .setValue(truyenHashMap)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(AdminThemPdfActivity.this, "Thêm truyện thành công!", Toast.LENGTH_LONG).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AdminThemPdfActivity.this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                .addOnFailureListener(e -> Toast.makeText(this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void taiTheLoaiVaoArray() {
@@ -177,6 +142,25 @@ public class AdminThemPdfActivity extends AppCompatActivity {
                     Log.d(TAG, "Thể loại được chọn: " + tenTheLoaiChon + " và id: " + idTheLoaiChon);
                 })
                 .show();
+    }
+
+    private void dangTruyenLenDatabase(String duongUrlPdf) {
+        Log.d(TAG, "Đang đăng truyện vào realtime database");
+        HashMap<String, Object> truyenHashMap = new HashMap<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Truyen");
+        String uid = ref.push().getKey();
+        truyenHashMap.put("uid", uid);
+        truyenHashMap.put("tenTruyen", tenTruyen);
+        truyenHashMap.put("moTa", moTa);
+        truyenHashMap.put("theLoai_uid", idTheLoaiChon);
+        truyenHashMap.put("duongUrlTruyen", duongUrlPdf);
+        truyenHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
+
+        ref.child(Objects.requireNonNull(uid))
+                .setValue(truyenHashMap)
+                .addOnSuccessListener(unused -> Toast.makeText(AdminThemPdfActivity.this, "Thêm truyện thành công!", Toast.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Toast.makeText(AdminThemPdfActivity.this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
     @Override

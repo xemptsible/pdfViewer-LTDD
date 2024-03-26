@@ -22,7 +22,6 @@ import java.util.Objects;
 
 public class AdminThemCategoryActivity extends AppCompatActivity {
     private ActivityAdminThemCategoryBinding binding;
-    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +34,6 @@ public class AdminThemCategoryActivity extends AppCompatActivity {
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Thêm thể loại mới");
-
-        if (firebaseAuth == null) {
-            firebaseAuth = FirebaseAuth.getInstance();
-        }
 
         binding.btnDangCategoryMoi.setOnClickListener(v -> {
             dangTheLoaiMoi();
