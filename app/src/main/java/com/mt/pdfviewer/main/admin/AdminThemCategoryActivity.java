@@ -23,8 +23,6 @@ import java.util.Objects;
 public class AdminThemCategoryActivity extends AppCompatActivity {
     private ActivityAdminThemCategoryBinding binding;
     private FirebaseAuth firebaseAuth;
-    private String theLoai;
-    private EditText edTheLoaiMoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +44,11 @@ public class AdminThemCategoryActivity extends AppCompatActivity {
             dangTheLoaiMoi();
         });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void dangTheLoaiMoi() {
 
-        edTheLoaiMoi = binding.edThemCategory;
+        EditText edTheLoaiMoi = binding.edThemCategory;
 
-        theLoai = edTheLoaiMoi.getText().toString().trim();
+        String theLoai = edTheLoaiMoi.getText().toString().trim();
         if (theLoai.isEmpty()) {
             edTheLoaiMoi.setError("Vui lòng nhập tên thể loại");
         }
@@ -81,5 +70,12 @@ public class AdminThemCategoryActivity extends AppCompatActivity {
                         Toast.makeText(AdminThemCategoryActivity.this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

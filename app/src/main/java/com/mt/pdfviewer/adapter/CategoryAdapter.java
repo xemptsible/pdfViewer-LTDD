@@ -1,6 +1,7 @@
 package com.mt.pdfviewer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mt.pdfviewer.databinding.RvitemCategoryBinding;
+import com.mt.pdfviewer.main.AdminDashboardActivity;
+import com.mt.pdfviewer.main.admin.AdminDanhSachPdfActivity;
 import com.mt.pdfviewer.model.CategoryModel;
 
 import java.util.ArrayList;
@@ -25,15 +28,12 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> implements Filterable {
     private static final String TAG = "CategoryAdapter";
     private RvitemCategoryBinding binding;
-
-    private FilterCategory filterCategory;
-
     Context context;
-    ArrayList<CategoryModel> theLoaiArrayList, theLoaiDuocLoc;
+    ArrayList<CategoryModel> theLoaiArrayList, theLoaiLoc;
     public CategoryAdapter(Context context, ArrayList<CategoryModel> categories) {
         this.context = context;
         this.theLoaiArrayList = categories;
-        this.theLoaiDuocLoc = categories;
+        this.theLoaiLoc = categories;
     }
 
     @NonNull
@@ -70,10 +70,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                                     Toast.makeText(context, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 });
                     })
-                    .setNegativeButton("Hủy", (dialog, which) -> {
-                        dialog.dismiss();
-                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
                     .show();
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdminDanhSachPdfActivity.class);
+            intent.putExtra("uidTheLoai", uid);
+            intent.putExtra("tenTheLoai", theLoai);
+            context.startActivity(intent);
+            ((AdminDashboardActivity)context).finish();
         });
     }
 
@@ -84,10 +90,36 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public Filter getFilter() {
-        if (filterCategory == null) {
-            filterCategory = new FilterCategory(theLoaiDuocLoc, this);
-        }
-        return filterCategory;
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                if (constraint != null && constraint.length() > 0) {
+                    constraint = constraint.toString().trim();
+                    ArrayList<CategoryModel> daLoc = new ArrayList<>();
+
+                    for (CategoryModel theLoai : theLoaiLoc) {
+                        if (theLoai.getTheLoai().toLowerCase().contains(constraint))
+                            daLoc.add(theLoai);
+                    }
+                    results.count = daLoc.size();
+                    results.values = daLoc;
+                    Log.d("FilterCategory", "ArrayList filtered: " + results.values);
+                }
+                // Nếu xóa từ khóa lọc
+                else {
+                    results.count = theLoaiLoc.size();
+                    results.values = theLoaiLoc;
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                theLoaiArrayList = (ArrayList<CategoryModel>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
@@ -101,4 +133,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             deleteBtn = binding.btnDeleteCategory;
         }
     }
+
 }

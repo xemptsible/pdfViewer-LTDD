@@ -33,8 +33,8 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
     Context context;
     ArrayList<File> pdfFiles;
     ArrayList<File> pdfFilesLoc;
-//    ArrayList<PdfModel> pdfModels;
-//    ArrayList<PdfModel> filterPdfModels;
+//    ArrayList<PdfModelOLD> pdfModels;
+//    ArrayList<PdfModelOLD> filterPdfModels;
 
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;

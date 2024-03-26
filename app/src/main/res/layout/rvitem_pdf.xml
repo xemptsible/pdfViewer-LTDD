@@ -74,9 +74,10 @@
             android:id="@+id/tvMoTaTruyen"
             style="@style/TextAppearance.AppCompat.Body2"
             android:layout_width="0dp"
+            android:layout_height="0dp"
             android:padding="5dp"
-            android:layout_height="wrap_content"
             android:text="Description"
+            app:layout_constraintBottom_toTopOf="@+id/tvKichCo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/biaTruyen"
             app:layout_constraintTop_toBottomOf="@+id/tvTenTruyen" />

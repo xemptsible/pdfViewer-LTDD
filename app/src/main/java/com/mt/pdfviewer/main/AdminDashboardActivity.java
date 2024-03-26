@@ -48,7 +48,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
         rvCategory = binding.rvCategoryAdmin;
         searchView = binding.svCategory;
 
@@ -73,6 +72,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         Objects.requireNonNull(actionBar).setTitle("Admin Dashboard");
     }
 
+    private void xacThucNguoiDung() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+    }
+
     private void khoiTaoTimKiemTheLoai() {
         runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -87,14 +94,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 return true;
             }
         }));
-    }
-
-    private void xacThucNguoiDung() {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
     }
 
     private void taiTheLoai() {

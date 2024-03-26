@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
+    // Kích cỡ mảng byte cho PdfAdapterAdmin khi lấy PDF từ Storage
+    public static final long BYTE_ARRAY = 52428800; // 50MB
+
     //Đổi kích cỡ của file và đổi thành định dạng để trình bày kích cỡ file
     public static String layCoDinhDangFile(double size) {
         final int BYTES_IN_KILOBYTES = 1024;

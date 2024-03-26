@@ -2,12 +2,12 @@ package com.mt.pdfviewer.pdf;
 
 import androidx.annotation.NonNull;
 
-public class PdfModel {
+public class PdfModelOLD {
     private static int idDem = 0;
     private int id;
     private String title;
 
-    public PdfModel(String title) {
+    public PdfModelOLD(String title) {
         this.id = idDem++;
         this.title = title;
     }
