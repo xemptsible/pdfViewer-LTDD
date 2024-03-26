@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.hidePdf)
+        if (item.getItemId() == R.id.xoaPdf)
             Toast.makeText(this, "This was clicked",Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }

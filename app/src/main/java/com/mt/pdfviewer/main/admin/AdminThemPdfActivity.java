@@ -35,7 +35,6 @@ public class AdminThemPdfActivity extends AppCompatActivity {
     private final static int PDF_PICK_CODE = 1;
     private ActivityAdminThemPdfBinding binding;
     private ArrayList<String> categoryModelIds, categoryModelTheLoai;
-    private DatabaseReference theLoaiArrayRef;
     private FirebaseAuth firebaseAuth;
     private Uri pdfUri = null;
     private String tenTruyen, moTa, idTheLoaiChon, tenTheLoaiChon;
@@ -44,12 +43,10 @@ public class AdminThemPdfActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAdminThemPdfBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
         ActionBar actionBar =getSupportActionBar();
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("Thêm truyện mới");
 
         if (firebaseAuth == null) {
@@ -138,7 +135,7 @@ public class AdminThemPdfActivity extends AppCompatActivity {
     private void taiTheLoaiVaoArray() {
         categoryModelIds = new ArrayList<>();
         categoryModelTheLoai = new ArrayList<>();
-        theLoaiArrayRef = FirebaseDatabase.getInstance().getReference("TheLoai");
+        DatabaseReference theLoaiArrayRef = FirebaseDatabase.getInstance().getReference("TheLoai");
 
         theLoaiArrayRef.addValueEventListener(new ValueEventListener() {
             @Override

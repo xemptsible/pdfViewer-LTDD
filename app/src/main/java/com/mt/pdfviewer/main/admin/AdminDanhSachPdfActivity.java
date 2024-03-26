@@ -2,6 +2,7 @@ package com.mt.pdfviewer.main.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mt.pdfviewer.R;
 import com.mt.pdfviewer.adapter.PdfAdapterAdmin;
 import com.mt.pdfviewer.databinding.ActivityAdminDanhSachPdfBinding;
 import com.mt.pdfviewer.main.AdminDashboardActivity;
@@ -107,5 +109,10 @@ public class AdminDanhSachPdfActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_layout, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

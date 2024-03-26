@@ -64,8 +64,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }
 
         xacThucNguoiDung();
-        taiTheLoai();
-
+        layTheLoai();
         khoiTaoTimKiemTheLoai();
 
         ActionBar actionBar = getSupportActionBar();
@@ -96,7 +95,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }));
     }
 
-    private void taiTheLoai() {
+    private void layTheLoai() {
         categoryModels = new ArrayList<>();
         theLoaiRef = FirebaseDatabase.getInstance().getReference("TheLoai");
         theLoaiRef.addValueEventListener(new ValueEventListener() {
