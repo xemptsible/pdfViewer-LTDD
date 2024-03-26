@@ -122,7 +122,8 @@ public class AdminThemPdfActivity extends AppCompatActivity {
         truyenHashMap.put("tenTruyen", tenTruyen);
         truyenHashMap.put("moTa", moTa);
         truyenHashMap.put("theLoai_uid", idTheLoaiChon);
-        truyenHashMap.put("duongDanPdf", duongUrlPdf);
+        truyenHashMap.put("duongUrlTruyen", duongUrlPdf);
+        truyenHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
 
         ref.push()
                 .setValue(truyenHashMap)

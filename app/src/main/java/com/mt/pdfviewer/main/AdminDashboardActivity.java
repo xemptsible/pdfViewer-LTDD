@@ -36,7 +36,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private ActivityAdminDashboardBinding binding;
     private FirebaseAuth firebaseAuth;
     private RecyclerView rvCategory;
-    private android.widget.SearchView searchView;
+    private androidx.appcompat.widget.SearchView searchView;
     private DatabaseReference theLoaiRef;
     private ArrayList<CategoryModel> categoryModels;
     private CategoryAdapter categoryAdapter;
@@ -47,6 +47,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         binding = ActivityAdminDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
 
         rvCategory = binding.rvCategoryAdmin;
         searchView = binding.svCategory;
@@ -66,23 +67,28 @@ public class AdminDashboardActivity extends AppCompatActivity {
         xacThucNguoiDung();
         taiTheLoai();
 
-//        runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                categoryAdapter.getFilter().filter(query);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                categoryAdapter.getFilter().filter(newText);
-//                return true;
-//            }
-//        }));
+        khoiTaoTimKiemTheLoai();
 
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setTitle("Admin Dashboard");
     }
+
+    private void khoiTaoTimKiemTheLoai() {
+        runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                categoryAdapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                categoryAdapter.getFilter().filter(newText);
+                return true;
+            }
+        }));
+    }
+
     private void xacThucNguoiDung() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {

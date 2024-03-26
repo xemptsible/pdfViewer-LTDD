@@ -100,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
         userHashMap.put("matKhau", matKhau);
         userHashMap.put("tenNguoiDung", ten);
         userHashMap.put("hinhNguoiDung", "");
+        userHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
 
         if (ten.contains("admin") && email.contains("admin"))
         {

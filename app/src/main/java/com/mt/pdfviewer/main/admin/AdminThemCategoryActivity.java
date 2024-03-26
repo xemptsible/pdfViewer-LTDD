@@ -70,6 +70,7 @@ public class AdminThemCategoryActivity extends AppCompatActivity {
             String uid = ref.push().getKey();
             theLoaiHashMap.put("uid", uid);
             theLoaiHashMap.put("theLoai", theLoai);
+            theLoaiHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
 
             ref.child(uid)
                     .setValue(theLoaiHashMap)
