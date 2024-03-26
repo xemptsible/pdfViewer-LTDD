@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mt.pdfviewer.R;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,8 +32,6 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
     Context context;
     ArrayList<File> pdfFiles;
     ArrayList<File> pdfFilesLoc;
-//    ArrayList<PdfModel> pdfModels;
-//    ArrayList<PdfModel> filterPdfModels;
 
     public PdfAdapter(Context context, ArrayList<File> pdfFiles) {
         this.context = context;
@@ -55,7 +52,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> i
         holder.pdfMenuBtn.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.pdfMenuBtn);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
-                if (menuItem.getItemId() == R.id.hidePdf) {
+                if (menuItem.getItemId() == R.id.xoaPdf) {
                     Log.d("PdfAdapter", "Removing RV item at position" + holder.getAdapterPosition());
                     pdfFilesLoc.remove(position);
                     notifyItemRemoved(position);

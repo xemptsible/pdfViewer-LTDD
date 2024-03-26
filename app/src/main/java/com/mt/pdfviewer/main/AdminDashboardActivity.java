@@ -48,7 +48,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
         rvCategory = binding.rvCategoryAdmin;
         searchView = binding.svCategory;
 
@@ -65,12 +64,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }
 
         xacThucNguoiDung();
-        taiTheLoai();
-
+        layTheLoai();
         khoiTaoTimKiemTheLoai();
 
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setTitle("Admin Dashboard");
+    }
+
+    private void xacThucNguoiDung() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     private void khoiTaoTimKiemTheLoai() {
@@ -89,15 +95,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }));
     }
 
-    private void xacThucNguoiDung() {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-    }
-
-    private void taiTheLoai() {
+    private void layTheLoai() {
         categoryModels = new ArrayList<>();
         theLoaiRef = FirebaseDatabase.getInstance().getReference("TheLoai");
         theLoaiRef.addValueEventListener(new ValueEventListener() {

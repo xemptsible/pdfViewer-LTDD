@@ -8,19 +8,19 @@
     tools:context=".main.admin.AdminDanhSachPdfActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPdfTheLoai"
+        android:id="@+id/rvPdfTrongTheLoai"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svTruyenTheLoai"
+        app:layout_constraintTop_toBottomOf="@+id/svTruyenTrongTheLoai"
         tools:listitem="@layout/rvitem_pdf"/>
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/svTruyenTheLoai"
+        android:id="@+id/svTruyenTrongTheLoai"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
-        android:iconifiedByDefault="false"
+        app:iconifiedByDefault="false"
         app:queryHint="Nhập tên truyện"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
