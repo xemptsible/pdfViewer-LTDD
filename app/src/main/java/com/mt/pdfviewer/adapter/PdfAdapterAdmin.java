@@ -63,7 +63,7 @@ public class PdfAdapterAdmin extends RecyclerView.Adapter<PdfAdapterAdmin.PdfAdm
         pdfModel = pdfArrayList.get(position);
         String ten = pdfModel.getTenTruyen(),
                 moTa = pdfModel.getMoTa();
-        long dauThoiGian = pdfModel.getDauThoiGian();
+        long dauThoiGian = pdfModel.getDauThoiGianCapNhat();
         String thoiGianDinhDang = Utils.dinhDangThoiGian(dauThoiGian);
 
         holder.tenTruyen.setText(ten);
@@ -104,7 +104,7 @@ public class PdfAdapterAdmin extends RecyclerView.Adapter<PdfAdapterAdmin.PdfAdm
                     // Lấy kích cỡ trong byte
                     double bytes = storageMetadata.getSizeBytes();
 
-                    holder.ngayCapNhat.setText(Utils.layCoDinhDangFile(bytes));
+                    holder.kichCoTruyen.setText(Utils.layCoDinhDangFile(bytes));
                 })
                 .addOnFailureListener(e ->
                         Log.e(TAG, "Thất bại lấy kích cỡ: " + e.getMessage())
