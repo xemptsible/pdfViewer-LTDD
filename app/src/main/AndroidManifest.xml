@@ -23,16 +23,17 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".main.admin.AdminThemPdfActivity"
+            android:exported="false" />
+        <activity
             android:name=".main.admin.AdminThemCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".main.UserDashboardActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".main.AdminDashboardActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -46,11 +47,11 @@
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".pdf.PdfViewerActivity"
             android:exported="false" />
