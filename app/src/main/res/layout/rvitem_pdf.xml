@@ -11,22 +11,21 @@
     app:cardElevation="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutPdf"
+        android:id="@+id/layoutTruyen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/coverPdf"
-            android:layout_width="80dp"
-            android:layout_height="100dp"
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/biaTruyen"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:background="#5C8DCD"
             android:padding="4dp"
-            android:background="@color/design_default_color_secondary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </ImageView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvPdfTitle"
+            android:id="@+id/tvTenTruyen"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,43 +33,65 @@
             android:marqueeRepeatLimit="@integer/material_motion_duration_medium_2"
             android:padding="5dp"
             android:singleLine="true"
-            android:text="PDF title"
-            app:layout_constraintEnd_toStartOf="@+id/popupBtn"
-            app:layout_constraintStart_toEndOf="@+id/coverPdf"
+            android:text="Title"
+            app:layout_constraintEnd_toStartOf="@+id/btnLuaChonThem"
+            app:layout_constraintStart_toEndOf="@+id/biaTruyen"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvPdfDateAdded"
+            android:id="@+id/tvThoiGianCapNhat"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="dd/mm/YYYY"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/coverPdf" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/tvPdfSize"
+            android:id="@+id/tvKichCo"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="0.00 MB"
+            app:layout_constraintBottom_toBottomOf="@+id/tvThoiGianCapNhat"
+            app:layout_constraintEnd_toStartOf="@+id/tvThoiGianCapNhat"
+            app:layout_constraintTop_toTopOf="@+id/tvThoiGianCapNhat" />
+
+        <ImageButton
+            android:id="@+id/btnLuaChonThem"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:src="@drawable/dots_vertical"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTenTruyen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMoTaTruyen"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:layout_width="0dp"
+            android:padding="5dp"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/biaTruyen"
+            app:layout_constraintTop_toBottomOf="@+id/tvTenTruyen" />
+
+        <TextView
+            android:id="@+id/tvPdfTheLoai"
             style="@style/TextAppearance.AppCompat.Body2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="0.00 MB"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/coverPdf"
-            app:layout_constraintTop_toBottomOf="@+id/tvPdfTitle" />
-
-        <ImageView
-            android:id="@+id/popupBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/tvPdfSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/dots_vertical" />
+            android:padding="5dp"
+            android:text="PDF Category"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvKichCo"
+            app:layout_constraintStart_toEndOf="@+id/biaTruyen"
+            app:layout_constraintTop_toTopOf="@+id/tvKichCo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

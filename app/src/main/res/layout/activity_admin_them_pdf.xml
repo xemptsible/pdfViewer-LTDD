@@ -34,7 +34,7 @@
 
     <ImageButton
         android:id="@+id/btnGanPdf"
-        android:layout_width="wrap_content"
+        android:layout_width="35dp"
         android:layout_height="0dp"
         android:padding="12dp"
         app:layout_constraintBottom_toTopOf="@+id/edMoTaPdf"
@@ -61,9 +61,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/edMoTaPdf"
         app:layout_constraintTop_toBottomOf="@+id/edMoTaPdf"
-        app:drawableEndCompat="@drawable/baseline_arrow_drop_down_circle_24"
+        app:drawableEndCompat="@drawable/dots_horizontal"
         android:drawableStart="@drawable/list_box_outline"
         android:hint="Choose a category"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:drawablePadding="8dp"
         android:paddingLeft="4dp"

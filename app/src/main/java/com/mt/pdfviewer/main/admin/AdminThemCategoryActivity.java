@@ -70,8 +70,9 @@ public class AdminThemCategoryActivity extends AppCompatActivity {
             String uid = ref.push().getKey();
             theLoaiHashMap.put("uid", uid);
             theLoaiHashMap.put("theLoai", theLoai);
+            theLoaiHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
 
-            ref.push()
+            ref.child(uid)
                     .setValue(theLoaiHashMap)
                     .addOnSuccessListener(unused -> {
                         Toast.makeText(AdminThemCategoryActivity.this, "Thêm thể loại thành công!", Toast.LENGTH_LONG).show();
