@@ -1,14 +1,14 @@
 package com.mt.pdfviewer.model;
 
 public class CategoryModel {
-    private String theLoai, uid;
+    private String uid, theLoai;
 
     public CategoryModel() {
     }
 
-    public CategoryModel(String theLoai, String uid) {
-        this.theLoai = theLoai;
+    public CategoryModel(String uid, String theLoai) {
         this.uid = uid;
+        this.theLoai = theLoai;
     }
 
     public String getTheLoai() {

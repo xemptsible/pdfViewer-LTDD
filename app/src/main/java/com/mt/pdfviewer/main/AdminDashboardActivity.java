@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +36,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private ActivityAdminDashboardBinding binding;
     private FirebaseAuth firebaseAuth;
     private RecyclerView rvCategory;
+    private android.widget.SearchView searchView;
     private DatabaseReference theLoaiRef;
     private ArrayList<CategoryModel> categoryModels;
     private CategoryAdapter categoryAdapter;
@@ -47,6 +49,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         setContentView(view);
 
         rvCategory = binding.rvCategoryAdmin;
+        searchView = binding.svCategory;
 
         binding.btnThemCategory.setOnClickListener(v -> {
             startActivity(new Intent(this, AdminThemCategoryActivity.class));
@@ -63,6 +66,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         xacThucNguoiDung();
         taiTheLoai();
 
+//        runOnUiThread(() -> searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                categoryAdapter.getFilter().filter(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                categoryAdapter.getFilter().filter(newText);
+//                return true;
+//            }
+//        }));
 
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setTitle("Admin Dashboard");
