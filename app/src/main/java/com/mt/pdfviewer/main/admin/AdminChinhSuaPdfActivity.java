@@ -1,15 +1,13 @@
 package com.mt.pdfviewer.main.admin;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,9 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mt.pdfviewer.R;
 import com.mt.pdfviewer.databinding.ActivityAdminChinhSuaPdfBinding;
-import com.mt.pdfviewer.model.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -28,7 +24,6 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
     private static final String TAG = "AdminChinhSuaPdfActivity";
     private ActivityAdminChinhSuaPdfBinding binding;
     private String idTruyen, idTheLoaiChon, tenTheLoaiChon;
-    private FirebaseAuth firebaseAuth;
     private ArrayList<String> tenTLArrayList, idTLArrayList;
 
     @Override
@@ -41,14 +36,13 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Chỉnh sửa");
 
-        if (firebaseAuth == null) {
-            firebaseAuth = FirebaseAuth.getInstance();
-        }
-
         idTruyen = getIntent().getStringExtra("idTruyen");
 
         layTheLoai();
+        layTruyenChonDeChinhSua();
 
+        binding.tvCategoryPickerChinhSua.setOnClickListener(v -> taoAlertDialogChoPicker());
+        binding.btnXacNhanChinhSua.setOnClickListener(v -> {});
     }
 
     private void layTheLoai() {
@@ -59,7 +53,15 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                idTLArrayList.clear();
+                tenTLArrayList.clear();
+                for (DataSnapshot ds: snapshot.getChildren()) {
+                    String uid = String.valueOf(ds.child("uid").getValue());
+                    String theLoai = String.valueOf(ds.child("theLoai").getValue());
 
+                    idTLArrayList.add(uid);
+                    tenTLArrayList.add(theLoai);
+                }
             }
 
             @Override
@@ -67,6 +69,60 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void layTruyenChonDeChinhSua() {
+        DatabaseReference refTruyen = FirebaseDatabase.getInstance().getReference("Truyen");
+        refTruyen.child(idTruyen).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        idTheLoaiChon = snapshot.child("theLoai_uid").getValue(String.class);
+                        String moTa = snapshot.child("moTa").getValue(String.class);
+                        String tenTruyen = snapshot.child("tenTruyen").getValue(String.class);
+
+                        binding.edTenPdfChinhSua.setText(tenTruyen);
+                        binding.edMoTaPdfChinhSua.setText(moTa);
+
+                        DatabaseReference refTheLoai = FirebaseDatabase.getInstance().getReference("TheLoai");
+                        refTheLoai.child(idTheLoaiChon)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        String theLoai = snapshot.child("theLoai").getValue(String.class);
+                                        binding.tvCategoryPickerChinhSua.setText(theLoai);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void taoAlertDialogChoPicker() {
+        // Mảng có kích cỡ của thể loại được lấy từ FIREBASE
+        String[] mangTheLoai = new String[tenTLArrayList.size()];
+        for (int i = 0; i < tenTLArrayList.size(); i++) {
+            mangTheLoai[i] = tenTLArrayList.get(i);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Chọn thể loại")
+                .setItems(mangTheLoai, (dialog, which) -> {
+                    tenTheLoaiChon = tenTLArrayList.get(which);
+                    idTheLoaiChon = idTLArrayList.get(which);
+
+                    binding.tvCategoryPickerChinhSua.setText(tenTheLoaiChon);
+                    Log.d(TAG, "Thể loại được chọn: " + tenTheLoaiChon + " và id: " + idTheLoaiChon);
+                })
+                .show();
     }
 
 
