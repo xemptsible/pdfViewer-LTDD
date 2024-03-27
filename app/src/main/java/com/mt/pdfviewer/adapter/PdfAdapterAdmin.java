@@ -1,7 +1,5 @@
 package com.mt.pdfviewer.adapter;
 
-import static com.mt.pdfviewer.main.Utils.BYTE_ARRAY;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -19,14 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.mt.pdfviewer.R;
+import com.mt.pdfviewer.main.ChiTietPdfActivity;
 import com.mt.pdfviewer.main.Utils;
 import com.mt.pdfviewer.databinding.RvitemPdfBinding;
 import com.mt.pdfviewer.main.admin.AdminChinhSuaPdfActivity;
@@ -70,7 +62,7 @@ public class PdfAdapterAdmin extends RecyclerView.Adapter<PdfAdapterAdmin.PdfAdm
         holder.ngayCapNhat.setText(thoiGianDinhDang);
 
         Utils.layKichCoPdf(duongDan, binding.tvKichCo);
-        Utils.layPdfTuDuongDan(duongDan, ten, holder.biaTruyen);
+        Utils.layBiaPdfTuDuongDan(duongDan, ten, holder.biaTruyen);
         Utils.layTheLoaiPdf(theLoaiId, binding.tvPdfTheLoai);
 
         holder.btnLuaChon.setOnClickListener(v -> {
@@ -92,6 +84,12 @@ public class PdfAdapterAdmin extends RecyclerView.Adapter<PdfAdapterAdmin.PdfAdm
             });
             popupMenu.inflate(R.menu.popup_rv_menu);
             popupMenu.show();
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChiTietPdfActivity.class);
+            intent.putExtra("idTruyen", uid);
+            context.startActivity(intent);
         });
     }
 

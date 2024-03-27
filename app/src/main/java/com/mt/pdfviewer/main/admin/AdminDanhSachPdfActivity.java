@@ -112,7 +112,7 @@ public class AdminDanhSachPdfActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_layout, menu);
+        getMenuInflater().inflate(R.menu.dashboard_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

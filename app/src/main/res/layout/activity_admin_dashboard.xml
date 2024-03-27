@@ -16,6 +16,8 @@
         android:textSize="12sp"
         android:drawableStart="@drawable/playlist_plus"
         android:layout_margin="8dp"
+        android:backgroundTint="#5C8DCD"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent" />
@@ -26,6 +28,8 @@
         android:layout_height="wrap_content"
         android:text="Thêm sách mới"
         android:drawableStart="@drawable/book_plus"
+        android:backgroundTint="#5C8DCD"
+        android:textColor="@color/white"
         android:textSize="12sp"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,12 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mt.pdfviewer.adapter.PdfAdapterAdmin;
-import com.mt.pdfviewer.model.PdfModel;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -97,7 +94,7 @@ public class Utils {
                 );
     }
 
-    public static void layPdfTuDuongDan(String duongDan, String tenTruyen, PDFView biaTruyen) {
+    public static void layBiaPdfTuDuongDan(String duongDan, String tenTruyen, PDFView biaTruyen) {
         StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(duongDan);
         ref.getBytes(BYTE_ARRAY)
                 .addOnSuccessListener(bytes -> {

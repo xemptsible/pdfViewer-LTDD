@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.ChiTietPdfActivity"
+    android:padding="16dp">
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/biaTruyenChiTiet"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:background="#5C8DCD"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTenTruyen"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="PDF title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/biaTruyenChiTiet"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPhuDeTL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thể loại:"
+        app:layout_constraintStart_toEndOf="@+id/biaTruyenChiTiet"
+        app:layout_constraintStart_toStartOf="@+id/tvTenTruyen"
+        app:layout_constraintTop_toBottomOf="@+id/tvTenTruyen" />
+
+    <TextView
+        android:id="@+id/tvTheLoaiChiTiet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:text="Placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvPhuDeCapNhat"
+        app:layout_constraintTop_toBottomOf="@+id/tvTenTruyen" />
+
+    <TextView
+        android:id="@+id/tvPhuDeCapNhat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày cập nhật:"
+        app:layout_constraintStart_toEndOf="@+id/biaTruyenChiTiet"
+        app:layout_constraintStart_toStartOf="@+id/tvTenTruyen"
+        app:layout_constraintTop_toBottomOf="@+id/tvPhuDeTL" />
+
+    <TextView
+        android:id="@+id/tvThoiGianCapNhatChiTiet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:text="Placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvPhuDeCapNhat"
+        app:layout_constraintTop_toBottomOf="@+id/tvTheLoaiChiTiet" />
+
+    <TextView
+        android:id="@+id/tvPhuDeKichCo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kích cỡ:"
+        app:layout_constraintStart_toEndOf="@+id/biaTruyenChiTiet"
+        app:layout_constraintStart_toStartOf="@+id/tvTenTruyen"
+        app:layout_constraintTop_toBottomOf="@+id/tvPhuDeCapNhat" />
+
+    <TextView
+        android:id="@+id/tvKichCoChiTiet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:text="Placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvPhuDeCapNhat"
+        app:layout_constraintTop_toBottomOf="@+id/tvThoiGianCapNhatChiTiet" />
+
+    <TextView
+        android:id="@+id/tvPhuDeMoTa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mô tả"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/biaTruyenChiTiet" />
+
+    <TextView
+        android:id="@+id/tvMoTaChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPhuDeMoTa"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDocSach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#5C8DCD"
+        android:src="@drawable/book_open"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

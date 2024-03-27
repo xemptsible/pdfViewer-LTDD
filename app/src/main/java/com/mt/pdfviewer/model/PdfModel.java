@@ -3,19 +3,17 @@ package com.mt.pdfviewer.model;
 public class PdfModel {
     private String uid, tenTruyen, moTa, theLoai_uid, duongUrlTruyen;
     private long dauThoiGianCapNhat;
-    private int soLanXem;
 
     public PdfModel() {
     }
 
-    public PdfModel(String uid, String tenTruyen, String moTa, String theLoai_uid, String duongUrlTruyen, long dauThoiGianCapNhat, int soLanXem) {
+    public PdfModel(String uid, String tenTruyen, String moTa, String theLoai_uid, String duongUrlTruyen, long dauThoiGianCapNhat) {
         this.uid = uid;
         this.tenTruyen = tenTruyen;
         this.moTa = moTa;
         this.theLoai_uid = theLoai_uid;
         this.duongUrlTruyen = duongUrlTruyen;
         this.dauThoiGianCapNhat = dauThoiGianCapNhat;
-        this.soLanXem = soLanXem;
     }
 
     public String getUid() {
@@ -64,13 +62,5 @@ public class PdfModel {
 
     public void setDauThoiGianCapNhat(long dauThoiGianCapNhat) {
         this.dauThoiGianCapNhat = dauThoiGianCapNhat;
-    }
-
-    public int getSoLanXem() {
-        return soLanXem;
-    }
-
-    public void setSoLanXem(int soLanXem) {
-        this.soLanXem = soLanXem;
     }
 }
