@@ -1,5 +1,6 @@
 package com.mt.pdfviewer.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import java.util.Objects;
 public class ChiTietPdfActivity extends AppCompatActivity {
     private final static String TAG = "ChiTietPdfActivity";
     private ActivityChiTietPdfBinding binding;
-    private String idTruyen;
+    private String idTruyen, tenTruyen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,10 @@ public class ChiTietPdfActivity extends AppCompatActivity {
         layChiTietTruyen();
 
         binding.fabDocSach.setOnClickListener(v -> {
-            Log.d(TAG, "Reading!");
+            Intent intent = new Intent(this, PdfViewerActivity.class);
+            intent.putExtra("idTruyen", idTruyen);
+            intent.putExtra("tenTruyen", tenTruyen);
+            startActivity(intent);
         });
     }
 
@@ -46,7 +50,7 @@ public class ChiTietPdfActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String tenTruyen = snapshot.child("tenTruyen").getValue(String.class);
+                        tenTruyen = snapshot.child("tenTruyen").getValue(String.class);
                         String moTa = snapshot.child("moTa").getValue(String.class);
                         String theLoaiId = snapshot.child("theLoai_uid").getValue(String.class);
                         String url = snapshot.child("duongUrlTruyen").getValue(String.class);

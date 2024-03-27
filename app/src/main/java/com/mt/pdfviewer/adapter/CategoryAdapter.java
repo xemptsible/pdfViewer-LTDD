@@ -79,7 +79,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             intent.putExtra("uidTheLoai", uid);
             intent.putExtra("tenTheLoai", theLoai);
             context.startActivity(intent);
-            ((AdminDashboardActivity)context).finish();
+//            ((AdminDashboardActivity)context).finish();
         });
     }
 
