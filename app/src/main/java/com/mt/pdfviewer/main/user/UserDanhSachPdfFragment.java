@@ -1,18 +1,20 @@
 package com.mt.pdfviewer.main.user;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,8 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mt.pdfviewer.adapter.PdfAdapterUser;
 import com.mt.pdfviewer.databinding.FragmentUserDanhSachPdfBinding;
-import com.mt.pdfviewer.main.AdminDashboardActivity;
-import com.mt.pdfviewer.main.UserDashboardActivity;
 import com.mt.pdfviewer.model.PdfModel;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class UserDanhSachPdfFragment extends Fragment {
     private FragmentUserDanhSachPdfBinding binding;
     private Context context;
     private String theLoaiuid, theLoai;
-    private SearchView searchViewFragment;
+    private EditText edTimKiem;
     private ArrayList<PdfModel> pdfModelArrayList;
     private PdfAdapterUser pdfAdapterUser;
 
@@ -51,15 +51,6 @@ public class UserDanhSachPdfFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            theLoaiuid = getArguments().getString("theLoaiId");
-            theLoai = getArguments().getString("theLoai");
-        }
-    }
-
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
@@ -71,33 +62,48 @@ public class UserDanhSachPdfFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            theLoaiuid = getArguments().getString("theLoaiId");
+            theLoai = getArguments().getString("theLoai");
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUserDanhSachPdfBinding.inflate(LayoutInflater.from(getContext()), container, false);
-        khoiTaoTimKiemTruyen();
+
         if (theLoai.equals("All"))
             layTatCaTruyen();
         else
             layTruyenTheoTheLoai();
 
-        searchViewFragment = binding.svUserTruyen;
-        
-        return binding.getRoot();
-    }
-    private void khoiTaoTimKiemTruyen() {
-        requireActivity().runOnUiThread(() -> searchViewFragment.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+        binding.edTimKiemUserTruyen.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                pdfAdapterUser.getFilter().filter(query);
-                return true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                try {
+                    pdfAdapterUser.getFilter().filter(s);
+                }
+                catch (Exception e) {
+                    Log.e("UserDanhSachPdfFragment", Objects.requireNonNull(e.getMessage()));
+                }
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                pdfAdapterUser.getFilter().filter(newText);
-                return true;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
-        }));
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        return binding.getRoot();
     }
 
     private void layTatCaTruyen() {
@@ -107,6 +113,7 @@ public class UserDanhSachPdfFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pdfModelArrayList.clear();
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     PdfModel pdf = ds.getValue(PdfModel.class);
 
@@ -133,9 +140,9 @@ public class UserDanhSachPdfFragment extends Fragment {
         // Sắp xếp vật thể mà có child đang kiếm
         ref.orderByChild("theLoai_uid").equalTo(theLoaiuid)
                 .addValueEventListener(new ValueEventListener() {
-
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        pdfModelArrayList.clear();
                         for (DataSnapshot ds: snapshot.getChildren()) {
                             PdfModel pdf = ds.getValue(PdfModel.class);
 
