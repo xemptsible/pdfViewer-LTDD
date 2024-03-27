@@ -1,6 +1,6 @@
 package com.mt.pdfviewer.pdf;
 
-import static com.mt.pdfviewer.Utils.layCoDinhDangFile;
+import static com.mt.pdfviewer.main.Utils.layCoDinhDangFile;
 
 import android.content.Context;
 import android.content.Intent;

@@ -3,12 +3,16 @@ package com.mt.pdfviewer.main.admin;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,12 +22,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.mt.pdfviewer.databinding.ActivityAdminChinhSuaPdfBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class AdminChinhSuaPdfActivity extends AppCompatActivity {
     private static final String TAG = "AdminChinhSuaPdfActivity";
     private ActivityAdminChinhSuaPdfBinding binding;
-    private String idTruyen, idTheLoaiChon, tenTheLoaiChon;
+    private String tenTruyen, moTa, idTruyen, idTheLoaiChon, tenTheLoaiChon;
     private ArrayList<String> tenTLArrayList, idTLArrayList;
 
     @Override
@@ -42,7 +47,10 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
         layTruyenChonDeChinhSua();
 
         binding.tvCategoryPickerChinhSua.setOnClickListener(v -> taoAlertDialogChoPicker());
-        binding.btnXacNhanChinhSua.setOnClickListener(v -> {});
+        binding.btnXacNhanChinhSua.setOnClickListener(v -> {
+            Toast.makeText(this, "Đang cập nhật thông tin truyện...", Toast.LENGTH_LONG).show();
+            xacThucDuLieu();
+        });
     }
 
     private void layTheLoai() {
@@ -125,6 +133,44 @@ public class AdminChinhSuaPdfActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void xacThucDuLieu() {
+        tenTruyen = binding.edTenPdfChinhSua.getText().toString().trim();
+        moTa = binding.edMoTaPdfChinhSua.getText().toString().trim();
+
+        if (tenTruyen.isEmpty()) {
+            Toast.makeText(this, "Nhập tên truyện", Toast.LENGTH_LONG).show();
+        }
+        if (moTa.isEmpty()) {
+            Toast.makeText(this, "Nhập mô tả", Toast.LENGTH_LONG).show();
+        }
+        if (tenTheLoaiChon == null) {
+            Toast.makeText(this, "Chọn thể loại", Toast.LENGTH_LONG).show();
+        }
+        else if (!tenTruyen.isEmpty() && !moTa.isEmpty()) {
+            capNhatThongTinTruyen();
+        }
+    }
+
+    private void capNhatThongTinTruyen() {
+        HashMap<String, Object> truyenCapNhatHashMap = new HashMap<>();
+
+        truyenCapNhatHashMap.put("tenTruyen", tenTruyen);
+        truyenCapNhatHashMap.put("moTa", moTa);
+        truyenCapNhatHashMap.put("theLoai_uid", idTheLoaiChon);
+        truyenCapNhatHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Truyen");
+        ref.child(idTruyen)
+                .updateChildren(truyenCapNhatHashMap)
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Cập nhật trong " + TAG);
+                    Toast.makeText(this, "Cập nhật thành cong!", Toast.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.d(TAG, "Thất bại trong " + TAG);
+                    Toast.makeText(this, "Thất bại. Lý do: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

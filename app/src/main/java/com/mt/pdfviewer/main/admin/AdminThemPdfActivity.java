@@ -156,6 +156,7 @@ public class AdminThemPdfActivity extends AppCompatActivity {
         truyenHashMap.put("theLoai_uid", idTheLoaiChon);
         truyenHashMap.put("duongUrlTruyen", duongUrlPdf);
         truyenHashMap.put("dauThoiGianCapNhat", System.currentTimeMillis());
+        truyenHashMap.put("soLanXem", 0);
 
         ref.child(Objects.requireNonNull(uid))
                 .setValue(truyenHashMap)
