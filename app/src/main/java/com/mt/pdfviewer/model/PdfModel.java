@@ -2,18 +2,20 @@ package com.mt.pdfviewer.model;
 
 public class PdfModel {
     private String uid, tenTruyen, moTa, theLoai_uid, duongUrlTruyen;
-    private long dauThoiGian;
+    private long dauThoiGianCapNhat;
+    private int soLanXem;
 
     public PdfModel() {
     }
 
-    public PdfModel(String uid, String tenTruyen, String moTa, String theLoai_uid, String duongUrlTruyen, long dauThoiGian) {
+    public PdfModel(String uid, String tenTruyen, String moTa, String theLoai_uid, String duongUrlTruyen, long dauThoiGianCapNhat, int soLanXem) {
         this.uid = uid;
         this.tenTruyen = tenTruyen;
         this.moTa = moTa;
         this.theLoai_uid = theLoai_uid;
         this.duongUrlTruyen = duongUrlTruyen;
-        this.dauThoiGian = dauThoiGian;
+        this.dauThoiGianCapNhat = dauThoiGianCapNhat;
+        this.soLanXem = soLanXem;
     }
 
     public String getUid() {
@@ -48,19 +50,27 @@ public class PdfModel {
         this.theLoai_uid = theLoai_uid;
     }
 
-    public long getDauThoiGian() {
-        return dauThoiGian;
-    }
-
-    public void setDauThoiGian(long dauThoiGian) {
-        this.dauThoiGian = dauThoiGian;
-    }
-
     public String getDuongUrlTruyen() {
         return duongUrlTruyen;
     }
 
     public void setDuongUrlTruyen(String duongUrlTruyen) {
         this.duongUrlTruyen = duongUrlTruyen;
+    }
+
+    public long getDauThoiGianCapNhat() {
+        return dauThoiGianCapNhat;
+    }
+
+    public void setDauThoiGianCapNhat(long dauThoiGianCapNhat) {
+        this.dauThoiGianCapNhat = dauThoiGianCapNhat;
+    }
+
+    public int getSoLanXem() {
+        return soLanXem;
+    }
+
+    public void setSoLanXem(int soLanXem) {
+        this.soLanXem = soLanXem;
     }
 }

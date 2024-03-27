@@ -41,12 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         binding.btnDN.setOnClickListener(v -> {
-            xacThucData();
+            xacThucDangNhap();
         });
 
     }
 
-    private void xacThucData() {
+    private void xacThucDangNhap() {
         EditText edEmailDN = binding.edEmailDN,
                 edMatKhau = binding.edMatKhauDN;
 
